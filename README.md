@@ -77,4 +77,4 @@ This action will
 
 ### Step 5. submit
 
-Once step 4 is successful, you should end up with an HTML version published as a gh-page, as well as a PDF version (see "Other format" at the end of the table of content of the rendered HTML). This PDF version can be submitted to the [OpenReview platform](https://openreview.net/group?id=Computo).
+Once step 4 is successful, you should end up with an HTML version published as a gh-page, as well as a PDF version (see "Other format" at the end of the table of content of the rendered HTML). This PDF version can be submitted to the [OpenReview platform](https://openreview.net/group?id=Computo).# CB
