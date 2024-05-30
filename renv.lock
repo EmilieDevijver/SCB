@@ -557,7 +557,6 @@
       "Repository": "CRAN",
       "Requirements": [
         "R",
-        "RCurl",
         "rainbow"
       ],
       "Hash": "8bf20c39b7dc84e336a78d70891254e9"
