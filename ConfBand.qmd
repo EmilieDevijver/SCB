@@ -39,13 +39,14 @@ format:
 
 # Introduction
 
-Functional data analysis is widely used for handling complex data with smooth shapes, finding applications in diverse fields such as neuroscience (e.g., EEG data, \textcolor{red}{REF}), psychology (e.g., mouse-tracking data, @Quinton-2017-escon), and sensor data from daily-life activities (@jacques2022).
+Functional data analysis is widely used for handling complex data with smooth shapes, finding applications in diverse fields such as neuroscience (e.g., EEG data, @Zhang2020), psychology (e.g., mouse-tracking data, @Quinton-2017-escon), and sensor data from daily-life activities (@jacques2022).
 
 We consider multiple independent observations of the same function, yielding noisy functional data. To analyze such data, a common approach, typically in the parametric setting, involves projecting the data onto a functional space defined by a family of functions (@LI2022104806, @kokoszka2017introduction). When the family serves as an orthonormal basis, e.g., Legendre (with the standard scalar product) or Fourier (with another scalar product), the projection is clearly understood, but widely used families such as  splines are not orthonormal for the standard scalar product. Leveraging an approximate functional space offers a key advantage: it simplifies the inference problem to estimating coefficients, for example through methods like least squares or maximum likelihood estimation. Subsequently, the function is estimated as the mean of the functional data following projection onto the functional basis.
 
 Measuring the uncertainty of an estimator is usually done using confidence intervals. In this paper, our focus lies specifically on providing a simultaneous confidence band for the function means, rather than point-wise confidence intervals. This task presents several challenges: the confidence band must effectively control the simultaneous functional type-I error rate, as opposed to point-wise rates; it must strike a balance between being sufficiently conservative to maintain a confidence level while not being overly so as to render it meaningless; and the method used to construct this confidence band should be computationally feasible for practical application.
 
-Several developments have already been proposed to answer these questions. First, consider the case with only one individual (no repetition) but with many time points. Some methods study the asymptotic distribution of the infinity norm between the true function and its estimator. The asymptotic in the number of time points is studied in @Hall1991, @Claeskens2003. This approach works only for large datasets in time and is likely to be too conservative otherwise. For small samples, bootstrap methods have been developed to compute the confidence band (@Neumann1998, @Claeskens2003), but with a high computational cost. Another approach is to construct confidence bands based on the volume of the tube formula. @sun1994 studied the tail probabilities of suprema of Gaussian random processes. This approach is based on an unbiased linear estimator of the regression function. @Zhou1998 used the volume-of-tube formula for estimation by regression splines. @Krivobokova2010 used this method for the construction of confidence bands by penalized spline estimators. They proposed to mix Bayesian and frequentist approaches, to get the good properties from the Bayesian world but reducing the variability to be less conservative using the frequentist approach. The bias is considered through spline modeling, assuming sufficient knots are considered. @Liebl2019 have proposed a method based on random field theory and the volume-of-tube formula. They provide a band with locally varying widths using an unbiased estimator. Their method does not require the estimation of the full covariance function of the estimator, but only its diagonal. This reduces the computational time. From a practical viewpoint, @CB_survivalAnalysis2022 introduce a package to popularize simultaneous confidence bands, in the context of survival analysis. 
+Several developments have already been proposed to answer these questions. First, consider the case with only one individual (no repetition) but with many time points. Some methods study the asymptotic distribution of the infinity norm between the true function and its estimator. The asymptotic in the number of time points is studied in @Hall1991, @Claeskens2003. This approach works only for large datasets in time and is likely to be too conservative otherwise. For small samples, bootstrap methods have been developed to compute the confidence band (@Neumann1998, @Claeskens2003), but with a high computational cost. Another approach is to construct confidence bands based on the volume of the tube formula. @sun1994 studied the tail probabilities of suprema of Gaussian random processes. This approach is based on an unbiased linear estimator of the regression function. @Zhou1998 used the volume-of-tube formula for estimation by regression splines. @Krivobokova2010 used this method for the construction of confidence bands by penalized spline estimators. They proposed to mix Bayesian and frequentist approaches, to get the good properties from the Bayesian world but reducing the variability to be less conservative using the frequentist approach. The bias is considered through spline modeling, assuming sufficient knots are considered. @wang2022 proposed Kolmogorov-Smirnov simultaneous confidence band by modelising the error distribution, avoiding the esitmation of the covariance structure of the underlying stochastic process. They rely on B-splines for the estimation of the mean curve.
+ @Liebl2019 have proposed a method based on random field theory and the volume-of-tube formula. They provide a band with locally varying widths using an unbiased estimator. Their method does not require the estimation of the full covariance function of the estimator, but only its diagonal. This reduces the computational time. From a practical viewpoint, @CB_survivalAnalysis2022 introduce a package to popularize simultaneous confidence bands, in the context of survival analysis. 
 
 Some papers, like ours, rely on several observations of the same function. @bunea2011 propose a threshold-type estimator and derive error bounds and simultaneous confidence bands, having an unbiased estimator. @TELSCHOW202270 propose a simultaneous confidence band based on the Gaussian kinematic formula. Again, it assumes access to an unbiased estimator of the function of interest.
 Note that recent extensions have been proposed, to nonstationary random field in @Telschow2023 and based on conformal prediction in @conformalPrediction2022. These extensions are out of the scope of this paper, focusing on the simple functional case.
@@ -302,7 +303,7 @@ for (basis in c("Fourier", "Legendre",  "Splines")){
     alpha.tot = cbind(alpha.tot, alpha.true.L[1:min(c(L.star, vec.L))]-data$alpha.mu[1:min(c(L.star, vec.L))], alpha.true.L.n.large[1:min(c(L.star, vec.L))] - data$alpha.mu[1:min(c(L.star, vec.L))])
   }
   image.plot(abs(alpha.tot), main = paste0(basis, "'s basis"), col = pal(20), yaxt="n", xaxt = "n", xlab = "index of the basis" )
-  axis(2, at = seq(0, 1, length = ncol(alpha.tot)), labels = c("L=7, n=20", "L=7, n=100", "L=15, n=20", "L=15, n=100"), las = 2, cex.axis = 0.7)
+  axis(2, at = seq(0, 1, length = ncol(alpha.tot)), labels = c("L=7, n=20", "L=7, n=100", "L=15, n=20", "L=15, n=100"), las = 2, cex.axis = 0.6)
   axis(1, at = seq(0,1,length.out = 7), labels = c("1", "2", "3", "4", "5", "6", "7"))
 }
 ```
@@ -502,7 +503,6 @@ We can thus deduce a confidence band of level $1-\alpha$ for $\underline{f}^{L,L
 CB_1(\underline{f}^{L,L^*})& = \{ \forall t\in [0,1], [\underline{\hat{f}}^{L, L^*}(t) -\hat d^L(t) ; \underline{\hat{f}}^{L, L^*}(t) +\hat d^L(t) ]\}.
 \end{align*}
 
-\textcolor{red}{Dans la derniere section pour definir le critere, on a besoin de montrer que la variance de $\hat{\tau}$ est bornée par $L/N$. Le processus $(P^L y_i(t)-\underline{\hat{f}}^{L, L^*}(t))$ vit dans un espace de dimension $L$. Ca parait naturel de borner par $L/N$?? Mais comment le justifier ?  }
 
 The value $\hat q^L$ is defined implicitly in @eq-cL which involves the quantity $t\mapsto \tau^L(t)$. @Liebl2019 propose to estimate $\tau^L(t)$, for all $t$, by
 \begin{align*}
@@ -659,6 +659,7 @@ ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 #| tbl-cap: "Illustrative example. The confidence level of the confidence band is evaluated from 1000 repetitions. Confidence bands are calculated with the Legendre family, for several L in rows and several n in columns."
 
 library(knitr)
+library(kableExtra)
 run = FALSE
 
 if (run == TRUE){
@@ -696,8 +697,15 @@ if (run == TRUE){
   colnames(perf) = vec.n
 } else {load("res_Tab1.RData") } ### charger les données
 
-kable(perf)
+#kable(perf)
+perf %>%
+  kable("latex", booktabs = TRUE) %>%
+  add_header_above(c("L" = 1, "n" = 2))
 ```
+
+
+
+
 
 ## Asymptotic confidence band for $f^{L,L^*}$ {#sec-bandfLLstar}
 Note that if one works in the asymptotic framework $n\rightarrow\infty$, the previous definition of $\hat d^L$ induces a natural asymptotic confidence band for the function $f^{L,L^*}$. Indeed, we can prove that 
@@ -722,7 +730,7 @@ The function of interest is $f^{L^*}=\underline{f}^{L^*, L^*}$, rather than $\un
 
 To achieve this, we use the decomposition outlined in @eq-decomposition 
 between the bias term and the statistical term. The idea is to bound the infinity norm of these two terms. A first strategy consists in bounding each term separately and then summing the two bounds to construct the confidence band. However, this approach tends to produce a band that is too large and  conservative. The reason is that applying 
-the infinite norms on each term before bounding them does not take into account the functional nature of the two terms. This approach is presented in details in Appendix. 
+the infinite norms on each term before bounding them does not take into account the functional nature of the two terms. 
 
 A second strategy consists in keeping the functional aspect by bounding the infinity norm of the sum of the functional two terms. This approach is detailed in this section. 
 
@@ -738,7 +746,7 @@ $$
 \mathbb{P}\left(\forall t\in[0,1], -\hat d_1^L(t) \leq \underline{f}^{L,L^*}(t) - \underline{\hat{f}}_1^{L,L^*}(t) \leq \hat d_1^L(t)\right) = 1-\alpha.
 $$ {#eq-def-dL1}
 
-Then, we need to control the bias $Bias_{L,L^*}(t) = \underline{f}^{L,L^*}(t)-f^{L^*}(t)$. Recall than when $L_{\max}$ is large enough and $n> L_{\max}$, $f^{L^*} = \underline{f}^{L_{\max},L^*}$. Therefore, we want to control the $Bias_{L,L^*}(t) = \underline{f}^{L,L^*}(t) - \underline{f}^{L_{\max},L^*}(t)$. It would be tempting to replace $Bias_{L,L^*}(t)$ by its estimation based on the second sample $\mathbf{y}^2$. But this would introduce an estimation error that we also need to control, in the same spirit than what is done in @PCO. We can use again @sec-bandSun to compute the function $\hat d_2^{L,L_{\max}}(t)$ on the sample $\mathbf{y}^2$, and the functional estimators $\underline{\hat{f}}_2^{L,L^*}(t)$ and $\underline{\hat f}_2^{L_{\max}, L^*}(t)$ of $\underline{f}^{L,L^*}(t)$ and $\underline{ f}^{L_{\max}, L^*}(t)$, respectively. This allows to construct the following band for $\underline{f}^{L,L^*}(t) - \underline{f}^{L_{\max},L^*}$ for a confidence level $1-\beta$, 
+Then, we need to control the bias $Bias_{L,L^*}(t) = \underline{f}^{L,L^*}(t)-f^{L^*}(t)$. Recall than when $L_{\max}$ is large enough and $n> L_{\max}$, $f^{L^*} = \underline{f}^{L_{\max},L^*}$. Therefore, we want to control the $Bias_{L,L^*}(t) = \underline{f}^{L,L^*}(t) - \underline{f}^{L_{\max},L^*}(t)$. It would be tempting to replace $Bias_{L,L^*}(t)$ by its estimation based on the second sample $\mathbf{y}^2$. But this would introduce an estimation error that we also need to control, in the same spirit than what is done in @Pascal2017.  We can use again @sec-bandSun to compute the function $\hat d_2^{L,L_{\max}}(t)$ on the sample $\mathbf{y}^2$, and the functional estimators $\underline{\hat{f}}_2^{L,L^*}(t)$ and $\underline{\hat f}_2^{L_{\max}, L^*}(t)$ of $\underline{f}^{L,L^*}(t)$ and $\underline{ f}^{L_{\max}, L^*}(t)$, respectively. This allows to construct the following band for $\underline{f}^{L,L^*}(t) - \underline{f}^{L_{\max},L^*}$ for a confidence level $1-\beta$, 
 
 $$
 \mathbb{P}\left(\forall t\in[0,1], - \hat d_2^{L,L_{\max}}(t) \leq \underline{ f}^{L_{\max}, L^*}(t)- \underline{ f}^{L, L^*}(t) - (\underline{\hat f}_2^{L_{\max}, L^*}(t)-\underline{\hat f}_2^{L, L^*}(t)) \leq \hat d_2^{L,L_{\max}}(t)\right) = 1-\beta.
@@ -943,7 +951,11 @@ if (run == TRUE){
   colnames(perf) = vec.n
   save(perf, file = "Res_Tab2.RData")
 } else {load('Res_Tab2.RData')}
-kable(perf)
+#kable(perf)
+
+perf %>%
+  kable("latex", booktabs = TRUE) %>%
+  add_header_above(c("L" = 1, "n" = 2))
 ```
 
 ## Influence of $L$ {#sec-SelectionL2}
@@ -989,7 +1001,7 @@ for (basis in c("Legendre", "Fourier", "Splines")){
 
 ggplot(df, aes(x = dimension, y = Norm, fill = type)) +
   geom_line() + 
-  facet_grid(type ~ basis, scale = 'free') + xlab("L")
+  facet_grid(type ~ basis, scales = 'free') + xlab("L")
 
 ```
 
@@ -1060,28 +1072,28 @@ The width of the confidence band with the true $L^*$ is smaller, which is expect
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-width
-#| fig-cap: "Illustrative example. We display within boxplots the confidence band's width over 100 repetitions for the model selected by our criterion, some fixed Lmax and the true (unknown) $L^{*}$ for Fourier (left), Legendre (middle) and Splines (right) basis."
+#| fig-cap: "Illustrative example. We display within boxplots the confidence band's width over 100 repetitions for the band CB2 (Lhat), some fixed Lmax and the true (unknown) $L^{*}$ for Fourier (left), Legendre (middle) and Splines (right) basis."
 #| 
 
 ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) + 
   geom_boxplot() + 
-  facet_grid(~basis)
+  facet_wrap(~basis, scales = "free_y")
 ```
 
-# Selection criteria of the best confidence band accounting for the bias {#sec-modsel}
+# Selection of the best confidence band with a criteria taking into account the bias {#sec-modsel}
 
 
-In this section, we want to propose a new heuristic criteria going back to the  definition of the band itself seen as the estimation of a quantile of a certain empirical process. The criteria is inspired by model selection tools to select the best dimension $L$.
+In this section, we want to use the collection of confidence bands defined in @sec-bandSun without correcting their bias but instead by proposing a criteria which is a trade-off between this bias and the dimension of the basis. To do that, we propose a new heuristic criteria going back to the  definition of the band itself seen as the estimation of a quantile of a certain empirical process. The criteria is inspired by model selection tools to select the best dimension $L$. In the following, we assume that $L_{\max}$ is large enough such that $\underline f^{L_{\max},L^*}=f^{L^*}$.
 
 We work on the quantile $q^L$ introduced in @eq-qL,  its oracle version $q^{L^*}$ for the level 
-$L^*$ and the estimation $\hat q^L$. All of them are scalar, in a collection of scalars, with $L=1, \ldots, L_{\max}$. A natural criteria to choose the best $L$  is such that the estimator $\hat q^L$ minimizes the quadratic error $\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right)$. However, this quadratic error is unknown as $q^{L^*}$ is unknown. We can not directly use it.
+$L^*$ and the estimation $\hat q^L$. All of them are scalar, in a collection of scalars, with $L=L_{\min}, \ldots, L_{\max}$. A natural criteria to choose the best $L$  is such that the estimator $\hat q^L$ minimizes the quadratic error $\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right)$. However, this quadratic error is unknown as $q^{L^*}$ is unknown. We can not directly use it.
 
-Instead, we study $\|\hat{q}^{L_{\max}}-\hat q^L\|^2$. We assume that $L_{\max}$ is large enough such that $\underline f^{L_{\max},L^*}=f^{L^*}$.
-While  the theoretical error decreases when $L<L^*$ and increases when $L>L^*$,  this approximation is still decreasing when $L>L^*$, as illustrated in @fig-crit1. 
+Instead, we study $\|\hat{q}^{L_{\max}}-\hat q^L\|^2$. 
+While  the theoretical quadratic error $\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right)$ decreases when $L<L^*$ and increases when $L>L^*$,  the approximation $\|\hat{q}^{L_{\max}}-\hat q^L\|^2$ of this error is still decreasing when $L>L^*$, as illustrated in @fig-crit1. 
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-crit1
-#| fig-cap: "Illustrative example. For a given simulated dataset, we show the behavior of the error as a function of the dimension L, for Fourier (left), Legendre (middle) and Splines (right) basis."
+#| fig-cap: "Illustrative example. For a given simulated dataset, we show the behavior of the approximation of the quadratic error of the quantile, as a function of  dimension L, for Fourier (left), Legendre (middle) and Splines (right) basis."
 #| 
 
 compute.conf.band.L.star.3 = function(data, basis, L, Lmax = 30, alpha = 0.05, beta = 0.05){
@@ -1148,30 +1160,20 @@ ggplot(dfCriterion, aes(x = dimension, y = error)) +
 ```
 
 
-The, we recognize a behavior similar to a bias, high with model of small dimension, and small when dimension is large. Selecting a model using this criterion will always overfit the data. Thus, we propose to penalize by the dimension, as usually in model selection criterion.
-
-\textcolor{red}{old paragraph - start}
-
-Instead, we use the classic decomposition into bias and variance:
-$$\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right) = \|q^{L^*}-q^L\|^2+\mathbb{E}\left( \|q^L-\hat q^L\|^2\right)=:b^L+v^L,$$
-where the first term $b^L = \|q^{L^*}-q^L\|^2$ is the bias term and $v^L = \mathbb{E}\left( \|q^L-\hat q^L\|^2\right)$ is the variance term. Note that these terms are not functional and different from the functional bias defined previously. The two terms are unknown. Let us denote $\hat b^L$ and $\hat v^L$ their estimators. We assume that $L_{\max}$ is large enough such that $\underline f^{L_{\max},L^*}=f^{L^*}$. Under this assumption, instead of computing the bias  $\|q^{L^*}-q^L\|^2$, we focus on  $\|q^{L_{\max}}-q^L\|^2$. This is not an equality because  the first term decreases when $L<L^*$ and increases when $L>L^*$, while the second term is still decreasing when $L>L^*$. However, we just need the decreasing behavior of the bias which will be compensated by the increasing of the variance. We then introduce the estimator of the bias as $\hat b^L = \|\hat q^{L_{\max}}-\hat q^L\|^2$. For the variance term, we need to bound it. Let us remark that the variance of $\hat q^L$ is  of order $L/N$.  \textcolor{red}{ Est ce qu'on a une ref pour justifier ca ?   J'ai rien trouvé. Mais pour estimer $q^L$, on utilise l'estimateur  $\hat \tau^L$.  Il faudrait pouvoir calculer la variance de cet estimateur pour en déduire l'ordre de celle de $\hat q^L$? }
-Thus we set $$\hat v^L := \lambda \frac{L}{N},$$ where  $\lambda>0$ is a tuning parameter. 
-
-\textcolor{red}{old paragraph - end}
-
-
+We recognize a behavior similar to a bias, high when dimension is small, and small when dimension is large. Selecting a dimension using this criterion will always overfit the data. Thus, we propose to penalize this quantity by the dimension $L$ divided by the sample size $N$, as usual in model selection criterion. For that, we introduce a regularisation parameter $\lambda>0$ which balances the two terms. 
 A natural criteria to select the best $L$ is then  
-$$crit(L) =  \|\hat q^{L_{\max}}-\hat q^L\|^2  +\lambda \frac{L}{N}.$$
+$$\widetilde{crit}(L) =  \|\hat q^{L_{\max}}-\hat q^L\|^2  +\lambda \frac{L}{N}.$$
 
 Then we define 
-$$\hat L = \arg\min_L crit(L),$$
-and take the band centered around $\underline{\hat{f}}^{\hat L, L^*}$. 
+$$\tilde L = \arg\min_L \widetilde{crit}(L),$$
+and take the band centered around $\underline{\hat{f}}^{\tilde L, L^*}$:
+$$CB_3(\underline{f} ^{L^*}) = CB_1(\underline{f}^{\tilde L, L^*})$$
 
-In @fig-critlast, we illustrate the behavior of this model selection criterion on simulated data, with $\lambda=1$ for the three basis. We can see   that $\hat L$ is overestimated. As we work with nested spaces, it ensures that $\hat L$ has the tendency to be larger than $L^*$ and thus the confidence band is automatically unbiased. 
+In @fig-critlast, we illustrate the behavior of this selection criterion on simulated data, with $\lambda=1$ for the three basis. We can see   that $\tilde L$ is overestimated. As we work with nested spaces, it ensures that $\tilde L$ has the tendency to be larger than $L^*$ and thus the confidence band is automatically unbiased. 
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-critlast
-#| fig-cap: "Illustrative example. For a given simulated dataset, we show the behavior of the criteria as a function of the dimension L, for Fourier (left), Legendre (middle) and Splines (right) basis."
+#| fig-cap: "Illustrative example. For a given simulated dataset, we show the behavior of the criteria $\widetilde{crit}$ as a function of  dimension L, for Fourier (left), Legendre (middle) and Splines (right) basis."
 #| 
 
 compute.conf.band.L.star.3 = function(data, basis, L, Lmax = 30, alpha = 0.05, beta = 0.05){
@@ -1237,7 +1239,7 @@ ggplot(dfCriterion, aes(x = dimension, y = criterion)) +
 
 ```
 
-In @fig-critlastmodsel,  we test which model is selected over 100 repetitions for the three basis. The estimated dimension is  equal or larger than the true $L^*=11$. As in @fig-modelsel, being larger is not a problem.   However, the selected dimension is smaller in distribution, and closer to the true value than in @fig-modelsel. Thus this new approach performs better. Moreover, as we then use the confidence band of @sec-bandSun, the confidence level is ensured to be the expected one. 
+In @fig-critlastmodsel,  we test which model is selected over 100 repetitions for the three basis. The estimated dimension is  equal or larger than the true $L^*=11$. As in @fig-modelsel, being larger is not a problem.   However, we can see that $\widetilde{crit}$ performs better than $crit$. Indeed, the selected dimension $\tilde{L}$ is smaller in distribution ( @fig-critlastmodsel), and closer to the true value than $\hat{L}$ ( @fig-modelsel).  Moreover, as we then use the confidence band of @sec-bandSun, the confidence level is ensured to be the expected one. 
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-critlastmodsel
@@ -1278,7 +1280,7 @@ if (run == TRUE){
     
     dfBandWidth = rbind(dfBandWidth, data.frame(Band.width = length.modsel,
                                                 basis = rep(basis, repet),
-                                                dimension = rep("Lhat2", each = repet)))  
+                                                dimension = rep("Ltilde", each = repet)))  
   }
   save(dfLhatSelect, file = "Res_barplot_n50_3basisLhat.RData")
   save(dfBandWidth, file = "Res_Tab3_n50_3basisBandWidth_2.RData")
@@ -1295,12 +1297,14 @@ We then show in @fig-width-2 that the width of the selected model is better than
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-width-2
-#| fig-cap: "Illustrative example. We display within boxplots the confidence band's width over 100 repetitions for the model selected by our criterion, some fixed Lmax and the true (unknown) $L^{*}$ for Fourier (left), Legendre (middle) and Splines (right) basis."
+#| fig-cap: "Illustrative example. We display within boxplots the confidence band's width over 100 repetitions for the dimension $\hat L$ selected by crit, the dimension $\tilde L$ selected by $\widetilde{crit}$, some fixed Lmax and the true (unknown) $L^{*}$ for Fourier (left), Legendre (middle) and Splines (right) basis."
 #| 
 
 load('Res_Tab3_n50_3basisBandWidth_2.RData')
 
-ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) +    geom_boxplot() +     facet_grid(~basis)
+ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) +    
+  geom_boxplot() +     
+  facet_wrap(~basis, scales = "free_y")
 ```
 
 # Real data analysis
@@ -1312,7 +1316,7 @@ We select the level of each basis using the method introduced in  @sec-modsel.
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-realdata
-#| fig-cap: "Real data analysis example. We display the confidence bands for Fourier (left), Legendre (middle) and Splines (right) basis on the Berkeley Growth Study data. Black curves correspond to the confidence bands with $L_{max}$, while colored one are the confidence bands constructed by our data-driven method. "
+#| fig-cap: "Real data analysis example. We display the confidence bands for Fourier (left), Legendre (middle) and Splines (right) basis on the Berkeley Growth Study data. Black curves correspond to the confidence bands with $L_{max}$, while colored one are the confidence bands CBE. "
 #| 
 library(fda)
 data(growth)
@@ -1340,7 +1344,7 @@ for (basis in c("Legendre", "Splines", "Fourier")){
   lambda = 1
   crit = abs(rep(c.Lmax, length(vec.L)) - c.L[vec.L]) + lambda * vec.L/((dim(data$y)[1]))
   mod.sel = vec.L[which.min(crit)]
-  print(paste0('model selected:', mod.sel))
+  #print(paste0('model selected:', mod.sel))
   conf.band.L.star.2 = compute.conf.band.L(data, basis, mod.sel, alpha = alpha)
   
   dfBandup = rbind(dfBandup, data.frame(Time = growth$age,
@@ -1349,7 +1353,7 @@ for (basis in c("Legendre", "Splines", "Fourier")){
   dfBandlow = rbind(dfBandlow, data.frame(Time = growth$age,
                                           bandlow = t(conf.band.L.star.2$f.hat.low),
                                           basis = rep(basis, length(data$time))))
-  print(paste0('length L sel:', conf.band.L.star.2$c.L))
+  #print(paste0('length L sel:', conf.band.L.star.2$c.L))
   
   res_growth = cbind(res_growth, c(conf.band.L.max$c.L, conf.band.L.star.2$c.L, mod.sel))
 }
@@ -1365,22 +1369,27 @@ p1 <- ggplot()+  geom_line(data=df.data, aes(x=Time, y =f, group=ind), color = "
 
 p1
 
-res_growth
+res_growth %>% 
+ kable("latex", booktabs = TRUE) %>%
+  add_header_above(c("" = 1, "Basis" = 3))
 ```
 
-As the data is not periodic, the Fourier basis is meaningless, and so is the associated confidence band, whatever the level considered. Both splines and Legendre basis give similar confidence bands. 
-When analyzing the length of the bands compared with the one with $L_{\max}$ coefficients, we see that there are less smooth but also smaller, and from our empirical study we guess that it makes a trade-off between bias and variance. 
+As the data is not periodic, the Fourier basis is meaningless, and so is the associated confidence band, whatever the dimension considered. Both splines and Legendre basis give similar confidence bands. 
+When analyzing the width of the bands compared with the one obtained with $L_{\max}$, we see that there are less smooth but also smaller, and from our empirical study we guess that it makes a trade-off between bias and variance. 
 
 
 # Conclusion {#sec-conc}
 This paper discusses the construction of confidence bands when considering a linear model over a functional family. Depending on the nature of the family (an orthogonal or orthonormal basis, or just a vector space), theoretical guarantees of the linear estimator are reminded and illustrated. 
-Then, several confidence bands are proposed. 
-First, when considering a functional family with a fixed level, we discuss the confidence band derived from @sun1994. It is bias if the level is not high enough to approximate well the true function.
-Then, a new confidence band is proposed that correct this bias. To do so, the bias is estimated and the additional randomness is controlled. A model selection criterion is proposed to select the best level.
-Unfortunately, the two kinds of randomness are leading to a larger confidence band, and this result is then not more interesting than the naive one, which consists in taking the largest level possible $L_{\max}$. 
-Finally, a heuristic model selection criterion is proposed to select the level on the first confidence band, that did not correct the bias. It takes into account the bias as well as the variance, to select a moderate level. Throughout the paper, extensive experimental study on Fourier, Legendre and Spline basis have illustrated the theoretical and methodological proposition, and a real data study is proposed to conclude the paper. 
+Then, several confidence bands are proposed. Throughout the paper, extensive experimental study on Fourier, Legendre and Spline basis have illustrated the theoretical and methodological proposition, and a real data study is proposed to conclude the paper. 
 
-The last model selection criterion is heuristic, while each term is intuitive. An interesting next step, but out of the scope of this paper, consists of a theoretical study of this criterion. No result, to our knowledge, exist for confidence band with the supremum norm. The euclidean norm is well-studied in general, but is not of interest here, where we want to ensure that the tube is valid as a whole. The supremum norm, on its side, is difficult to study theoretically. A keypoint here also is the randomness of the criterion, that has also to be taken into account, through an oracle inequality for example. 
+
+First, when considering a functional family with a fixed level, we discuss the confidence band derived from @sun1994. It is biased if the level is not high enough to approximate well the true function.
+Then, a new confidence band is proposed that correct this bias. To do so, the bias is estimated and the additional randomness is controlled. A  selection criterion is proposed to select the best dimension
+Unfortunately, the two kinds of randomness are leading to a wider confidence band, and this result is then not more interesting than the naive one, which consists in taking the largest  possible dimension $L_{\max}$. 
+Finally, a heuristic  selection criterion is proposed to select the dimension on the first confidence band, that did not correct the bias. It takes into account the bias as well as the variance, to select a moderate dimension.
+
+
+The last  selection criterion is heuristic, while each term is intuitive. An interesting next step, but out of the scope of this paper, consists of a theoretical study of this criterion. No result, to our knowledge, exist for confidence band with the supremum norm. The euclidean norm is well-studied in general, but is not of interest here, where we want to ensure that the tube is valid as a whole. The supremum norm, on its side, is difficult to study theoretically. A keypoint here also is the randomness of the criterion, that has also to be taken into account, through an oracle inequality for example. 
 
 # References {.unnumbered}
 
@@ -1390,7 +1399,7 @@ The last model selection criterion is heuristic, while each term is intuitive. A
 
 # Appendix: proofs
 
-## Proof of Proposition @prp-error 
+## Proof of  @prp-error 
 
  Let us prove the first point.
  We have 
@@ -1413,13 +1422,13 @@ $$
  
 
 
-## Proof of Theorem @thm-CB_Liebl_asymptotic
+## Proof of  @thm-CB_Liebl_asymptotic
 
 We have 
 $$P(\forall t \in [0,1], |\hat{\underline{f}}^{L, L^*}(t)-f^{L,L^*}(t)| \leq \hat d^L(t)) = P(\forall t \in [0,1], |\hat{\underline{f}}^{L, L^*}(t)-\underline{f}^{L, L^*}(t)+ \underline{f}^{L, L^*}(t)- f^{L,L^*}(t)| \leq \hat d^L(t))$$
  
  
- Set assumptions @def-ass-regression_finite and @def-ass-noise-spline and a probability $\alpha\in [0,1]$. Then, we have, 
+ Set  @def-ass-regression_finite and @def-ass-noise-spline and a probability $\alpha\in [0,1]$. Then, we have, 
 $$\lim_{n \rightarrow +\infty} P(\forall t \in [0,1], |\hat{\underline{f}}^{L, L^*}(t)-f^{L,L^*}(t)| \leq \hat d^L(t)) = 1-\alpha$$
 with $\hat d^L(t) = \hat c^L \sqrt{\hat C_L(t,t)/N}$ and $\hat c^L$ defined as the solution of @eq-cL.
 
@@ -1435,91 +1444,6 @@ We have
 \end{align*}
 
  The last equality holds thanks to the independence of the two sub-samples. 
-
-
-# Heuristics of bounding separately the infinity norms of the \textcolor{green}{bias} term and the \textcolor{green}{approximation} term {#sec:band1}
-Let us give the main ideas. We denote 
-\begin{align*}
- A_{L, L^*} &= \sup_t|Approx(t)| = \sup_t|\underline{f}^{L, L^*}(t) - \underline{f}^{L^*,L^*}(t)| = \sup_t|\underline{f}^{L, L^*}(t) - f^{L^*}(t)|,\\
- b_{L, L^*} &=\sup_t| Bias(t)|= \sup_t|\hat{\underline{f}}^{L, L^*}(t) - \underline{f}^{L, L^*}(t)|,
-\end{align*} 
-the two infinity norms of the \textcolor{green}{approximation} and the \textcolor{green}{bias} terms. Recall that when $L\geq L^*$, $Approx(t)=0$ and thus $A_{L, L^*}=0$. Then by the triangular inequality, we get 
-$$\sup_t |\hat{\underline{f}}^{L, L^*}(t) -f^{L^*}(t)| \leq A_{L, L^*} + b_{L, L^*}.$$
-
-If we find a bound $M^L$ such that
-$$ 
-P( A_{L, L^*} + b_{L, L^*} \leq M^L)\geq 1-\alpha ,
-$$ {#eq-ML_BiaisVariance}
-it will imply a confidence band of order $1-\alpha$ for $f^{L^*}(t)$:
-$$
-P(\sup_t |\hat{\underline{f}}^{L, L^*}(t) -f^{L^*}(t)| \leq M^L)\geq 1-\alpha .
-$${#eq-ML}}
-
-
-The problem reduces to find $M^L$ which bounds both the \textcolor{green}{bias} term and the \textcolor{green}{approximation} term. We bound each term in  @sec-BiasLstar and @sec-ApproxLstar, respectively. The term $A_{L, L^*}$ is deterministic. However, as it is analytically unknown, we will estimate an upper bound based on observations. 
-To guarantee the independence between the two bounds, the sample of observations is split in two parts and the two bounds are calculated on one half of the sample. We denote $\mathbf{y}^1 = (y_1, \ldots, y_{n/2})$ and $\mathbf{y}^2 = (y_{n/2+1}, \ldots, y_{n})$ the two sub-samples. 
-Then we introduce the confidence band of $f^{L^*}$ based on $\underline{f}^{L,L^*}$ in @sec-BandLstar. 
-
-
-
-## Bound of the \textcolor{green}{bias} term. {#sec-BiasLstar}
-The bound of the \textcolor{green}{bias} term is calculated with the first sub-sample $\mathbf{y}^1$ of size $n/2$. The estimator $\hat{\underline{f}}_1^{L, L^*}$ is calculated on this sub-sample. 
-The statistical \textcolor{green}{bias} $b_{L, L^*}$ is the supremum of a Gaussian process. Using the confidence band proposed in Section \ref{sec:bandSun}, for a given confidence level $1-\alpha_1$, there exists an estimable function $\hat d_1^L()$ defined as $\hat d_1^L(t)= \hat c^L \sqrt{\frac{\hat{C}_L(t)}{n/2}}$ such that $$P(\forall t, \hat{\underline{f}}^{L,L^*}_1 (t) - \hat d_1^L(t) \leq \underline{f}^{L,L^*}(t)\leq \hat{\underline{f}}^{L,L^*}_1 (t) + \hat d_1^L(t))=1-\alpha_1.$$
-Let us denote $\hat d^L_1 = \sup_t |\hat d_1^L(t)|$. Then with probability $1-\alpha_1$, we have
-
-$$
-b_{L,L^*}\leq \hat d^L_1.
-$${eq:borne_bL}
-
-
-
-## Bound of the \textcolor{green}{approximation} term. {#sec-ApproxLstar}
-
-\textcolor{red}{Voir comment on va présenter les deux cas selon $L$ et $L^*$. Soit ici soit apres ? Ou dit on que meme si on estime $A_{L, L^*}$, ca ne change pas grand chose quand $L$ est grand ?? }
-
-Let us now bound the \textcolor{green}{approximation} term which has no explicit form. 
-We thus need to estimate a bound of $A_{L, L^*}$ and will use the second sub-sample $\mathbf{y}^2$ to do that. 
-
-Let us consider $L_{\max}$ large enough such that $\underline{f}^{L^*,L^*} =\underline{f}^{L_{\max},L^*}$. A natural estimator of $\underline{f}^{L, L^*}(t) - \underline{f}^{L_{\max},L^*}(t)$ is $\hat{\underline{f}}^{L, L^*} (t)- \hat{\underline{f}}^{L_{\max},L^*} (t)$. We can then decompose the \textcolor{green}{approximation} term by introducing its estimator: 
-\begin{align*}
-|\underline{f}^{L, L^*}(t) - \underline{f}^{L_{\max},L^*}(t)|&= 
-|\underline{f}^{L, L^*}(t) - \underline{f}^{L_{\max},L^*}(t)-(\hat{\underline{f}}^{L, L^*} (t)- \hat{\underline{f}}^{L_{\max},L^*} (t))| \\
-&+| \hat{\underline{f}}^{L, L^*} (t)- \hat{\underline{f}}^{L_{\max},L^*} (t)|.
-\end{align*}
-
-The first term is a centered Gaussian process, the second term is a quantity that we can estimate and thus bound. 
-Let us give a bound for the first term, using Section \ref{sec:bandSun}. 
-For a given level $1-\alpha_2$, there exists a function $\hat d^{L,L_{\max}}()$ such that 
-
-$$ P\left( \forall t \in [0,1], |\underline{f}^{L, L^*}(t) - \underline{f}^{L_{\max},L^*}(t)-(\hat{\underline{f}}^{L, L^*} (t)- \hat{\underline{f}}^{L_{\max},L^*} (t))| \leq \hat d^{L,L_{\max}}(t)\right) = 1-\alpha_2.
-$${eq-borne_dLLmax}
-
- Let us denote $\hat d^{L,L_{\max}} = \sup_t |\hat d^{L,L_{\max}}(t)|$ and $\| \hat{\underline{f}}^{L, L^*} - \hat{\underline{f}}^{L_{\max},L^*} \|_\infty = \sup_t | \hat{\underline{f}}^{L, L^*} (t)- \hat{\underline{f}}^{L_{\max},L^*} (t)|$. Then we can deduce that with probability $1-\beta_2$
-$$ A_{L,L^*} \leq  \hat d^{L,L_{\max}} + \| \hat{\underline{f}}^{L, L^*} - \hat{\underline{f}}^{L_{\max},L^*} \|_\infty.
-$$
-
-Note that when $L\geq L^*$, $ A_{L,L^*} = 0$. We thus expect the bound $\hat d^{L,L_{\max}} + \| \hat{\underline{f}}^{L, L^*} - \hat{\underline{f}}^{L_{\max},L^*} \|_\infty$ to be small when $L\geq L^*$. But as $L^*$ is unknown, we can not remove it from the bound. \textcolor{red}{Est ce qu'on peut voir que cette borne devient quasiment nulle quand $L$ est grand ? Y compris quand on n'est pas dans le vrai modele ?}
-
-\textcolor{cyan}{ajouter ici illustration 5 : étude du terme d'approximation - à regarder}
-
-## Confidence band of $\underline{f}^{L^*}$ for a given $L$ {#sec-BandLstar}
-Using the two bounds of the \textcolor{green}{bias} and the \textcolor{green}{approximation} terms allows to define a bound $M^L$ of $\hat{\underline{f}}^{L, L^*}-f^{L^*}$. We can prove the following result: 
-
-::: {#thm-CBfLstarMax}
-With high probability, we have
-$$ \forall t \in [0,1], \quad |\hat{\underline{f}}^{L,L^*}(t) - \underline{f}^{L^*,L^*}| \leq \hat M^L
-$$
-
-with $$\hat M^L := \hat d^L +\hat d^{L,L_{\max}} + \| \hat{\underline{f}}^{L, L^*} - \hat{\underline{f}}^{L_{\max},L^*}\|_\infty$$
-where $\hat d^L$ is defined by \eqref{eq:borne_bL} with level $\alpha/2$ using the first sub-sample $\mathbf{y}^1$ and $\hat d^{L,L_{\max}}$ is defined by \eqref{eq:borne_dLLmax} with level $\alpha/2$ using the second sub-sample $\mathbf{y}^2$. 
-:::
-
-\textcolor{red}{On serait vraiment capable de prouver ce théoreme ? sur le niveau de la proba ?}
-\textcolor{red}{Est ce qu'on peut prouver vraiment la proba ? Montrer que quand $L\geq L^*$, il n'y a plus que le terme $b_L$ et donc la proba est $1-\alpha/2$ alors qu'avant c'est $(1-\alpha/2)^2\approx 1-\alpha$ ? }
-
-This theorem provides a confidence band for $\underline{f}^{L^*,L^*}$ which is based on the estimator $\hat{\underline{f}}^{L,L^*}$:
-$$ \left[\hat{\underline{f}}^{L,L^*}(t) - \hat M^L; \hat{\underline{f}}^{L,L^*}(t) + \hat M^L\right] $$
-for all $t\in[0,1]$. 
 
 
 
