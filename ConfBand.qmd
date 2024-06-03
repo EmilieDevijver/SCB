@@ -660,7 +660,7 @@ ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 
 library(knitr)
 library(kableExtra)
-run = FALSE
+run = TRUE
 
 if (run == TRUE){
   nb.repeat = 1000
@@ -919,7 +919,7 @@ In @tbl-levLstar, we simulate 1000 repeated datasets with two sample sizes $n=50
 #| label: tbl-levLstar
 #| tbl-cap: "Illustrative example. We display the level of confidence for the proposed confidence band, for several L in rows and several n in columns."
 
-run = FALSE
+run = TRUE
 if (run == TRUE){
   nb.repeat = 1000
   n.test = 5000
@@ -1010,7 +1010,7 @@ We then evaluate the performance of the selection criteria. To do that, we simul
 #| label: fig-modelsel
 #| fig-cap: "Illustrative example. From 100 datasets, we calculate the distribution of the estimated dimension L. The true dimension is $L^*  =  11$. " 
 #|   
-run = FALSE
+run = TRUE
 if (run == TRUE){
   repet = 100
   
