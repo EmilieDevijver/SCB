@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Emilie Devijver">
 <meta name="author" content="Adeline Samson">
-<meta name="dcterms.date" content="2024-06-16">
+<meta name="dcterms.date" content="2024-07-07">
 <meta name="keywords" content="functional data, repeated data, confidence band, Kac-Rice formulae, bias, dimension selection">
 
 <title>Should we correct the bias in Confidence Bands for Repeated Functional Data?</title>
@@ -37,7 +37,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -108,8 +108,9 @@ div.csl-indent {
 background: #034E79;
       }
 </style>
+<meta name="quarto:status" content="draft">
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
@@ -124,7 +125,7 @@ background: #034E79;
    });
 }}});
   </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -155,7 +156,7 @@ window.Quarto = {
 
 </head>
 
-<body>
+<body><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
 
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   
@@ -198,14 +199,14 @@ ISSN 2824-7795</p>
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 16, 2024</p>
+        <p class="date">July 7, 2024</p>
       </div>
     </div>
                                     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">June 16, 2024</p>
+        <p class="date-modified">July 7, 2024</p>
       </div>
     </div>
       
@@ -422,7 +423,7 @@ y_{ij} = f(t_{j}) + \varepsilon_{ij},
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-BasisModel" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-BasisModel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-BasisModel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-BasisModel-1.svg" class="img-fluid figure-img">
@@ -487,7 +488,7 @@ Figure&nbsp;1: Illustrative example. We generate a regression functional model i
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-coefficients" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-coefficients" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-coefficients-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-coefficients-1.svg" class="img-fluid figure-img">
@@ -593,7 +594,7 @@ Figure&nbsp;2: Illustrative example. The true dimension is 11, we generate the c
 <span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(L<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-estimatorL" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-estimatorL" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-estimatorL-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-estimatorL-1.svg" style="height:50.0%" class="figure-img">
@@ -795,7 +796,7 @@ CB_1(\underline{f}^{L,L^*})&amp; = \{ \forall t\in [0,1], [\underline{\hat{f}}^{
 <span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-bandL" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-bandL" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bandL-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-bandL-1.svg" class="img-fluid figure-img">
@@ -854,7 +855,7 @@ Figure&nbsp;4: Illustrative example. For the three families, resp. Fourier, Lege
 <span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="tbl-levelL" class="cell quarto-float anchored">
+<div id="tbl-levelL" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levelL-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Illustrative example. The confidence level of the confidence band is evaluated from 1000 repetitions. Confidence bands are calculated with the Legendre family, for several L in rows and several n in columns.
@@ -1039,7 +1040,7 @@ CB_2(\underline{f}^{L^*})=\{\forall t\in[0,1], [\underline{\hat f}_2^{ L_{\max},
 <span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-Lstar" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-Lstar" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-Lstar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-Lstar-1.svg" class="img-fluid figure-img">
@@ -1108,7 +1109,7 @@ Figure&nbsp;5: Illustrative example. For a given dataset, we plot several confid
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="tbl-levLstar" class="cell quarto-float anchored">
+<div id="tbl-levLstar" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levLstar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;2: Illustrative example. We display the level of confidence for the proposed confidence band, for several L in rows and several n in columns.
@@ -1164,7 +1165,7 @@ Table&nbsp;2: Illustrative example. We display the level of confidence for the p
 <span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(type <span class="sc">~</span> basis, <span class="at">scales =</span> <span class="st">'free'</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-dLLmax" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-dLLmax" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dLLmax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-dLLmax-1.svg" style="height:50.0%" class="figure-img">
@@ -1230,7 +1231,7 @@ Figure&nbsp;6: Illustrative example. For a given dataset, we calculate the norm 
 <span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-modelsel" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-modelsel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-modelsel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-modelsel-1.svg" style="height:25.0%" class="figure-img">
@@ -1256,7 +1257,7 @@ The width of the confidence band with the true <span class="math inline">L^*</sp
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>basis, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-width" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-width" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-width-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-width-1.svg" style="height:25.0%" class="figure-img">
@@ -1340,7 +1341,7 @@ Figure&nbsp;8: Illustrative example. We display within boxplots the confidence b
 <span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-crit1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-crit1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-crit1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-crit1-1.svg" style="height:25.0%" class="figure-img">
@@ -1421,7 +1422,7 @@ Figure&nbsp;9: Illustrative example. For a given simulated dataset, we show the 
 <span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-critlast" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-critlast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-critlast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-critlast-1.svg" style="height:25.0%" class="figure-img">
@@ -1485,7 +1486,7 @@ Figure&nbsp;10: Illustrative example. For a given simulated dataset, we show the
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-critlastmodsel" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-critlastmodsel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-critlastmodsel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-critlastmodsel-1.svg" style="height:25.0%" class="figure-img">
@@ -1508,7 +1509,7 @@ Figure&nbsp;11: Illustrative example. We show the distribution of the selected m
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>basis, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-width-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-width-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-width-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-width-2-1.svg" style="height:25.0%" class="figure-img">
@@ -1578,7 +1579,7 @@ Figure&nbsp;12: Illustrative example. We display within boxplots the confidence 
 <span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-realdata" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-realdata" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-realdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="ConfBand_files/figure-html/fig-realdata-1.svg" style="height:25.0%" class="figure-img">
@@ -1597,7 +1598,7 @@ Figure&nbsp;13: Real data analysis example. We display the confidence bands for 
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Basis"</span> <span class="ot">=</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="tbl-realdata" class="cell quarto-float anchored">
+<div id="tbl-realdata" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-realdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;3
@@ -1732,7 +1733,7 @@ Zhou, S., X. Shen, and D. A. Wolfe. 1998. <span>“Local Asymptotics for Regress
   title = {Should We Correct the Bias in {Confidence} {Bands} for
     {Repeated} {Functional} {Data?}},
   journal = {Computo},
-  date = {2024-06-16},
+  date = {2024-07-07},
   url = {https://computo.sfds.asso.fr/template-computo-quarto},
   doi = {xxxx},
   issn = {2824-7795},
@@ -1759,7 +1760,7 @@ Zhou, S., X. Shen, and D. A. Wolfe. 1998. <span>“Local Asymptotics for Regress
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-devijver2024" class="csl-entry quarto-appendix-citeas" role="listitem">
 Devijver, Emilie, and Adeline Samson. 2024. <span>“Should We Correct the
 Bias in Confidence Bands for Repeated Functional Data?”</span>
-<em>Computo</em>, June. <a href="https://doi.org/xxxx">https://doi.org/xxxx</a>.
+<em>Computo</em>, July. <a href="https://doi.org/xxxx">https://doi.org/xxxx</a>.
 </div></div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1797,18 +1798,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1840,7 +1830,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -1899,7 +1911,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -3680,7 +3692,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb20-1455"><a href="#cb20-1455" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-1456"><a href="#cb20-1456" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-1457"><a href="#cb20-1457" aria-hidden="true" tabindex="-1"></a> </span>
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
