@@ -8,7 +8,7 @@
 
 <meta name="author" content="Emilie Devijver">
 <meta name="author" content="Adeline Samson">
-<meta name="dcterms.date" content="2024-10-13">
+<meta name="dcterms.date" content="2024-10-20">
 <meta name="keywords" content="functional data, repeated data, confidence band, Kac-Rice formulae, bias, dimension selection">
 
 <title>Should we correct the bias in Confidence Bands for Repeated Functional Data?</title>
@@ -91,6 +91,8 @@ div.csl-indent {
 <script src="ConfBand_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="ConfBand_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="ConfBand_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="ConfBand_files/libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="ConfBand_files/libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <style>
 
       .quarto-title-block .quarto-title-banner h1,
@@ -199,14 +201,14 @@ ISSN 2824-7795</p>
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 13, 2024</p>
+        <p class="date">October 20, 2024</p>
       </div>
     </div>
                                     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">October 13, 2024</p>
+        <p class="date-modified">October 20, 2024</p>
       </div>
     </div>
       
@@ -1733,7 +1735,7 @@ Zhou, S., X. Shen, and D. A. Wolfe. 1998. <span>“Local Asymptotics for Regress
   title = {Should We Correct the Bias in {Confidence} {Bands} for
     {Repeated} {Functional} {Data?}},
   journal = {Computo},
-  date = {2024-10-13},
+  date = {2024-10-20},
   url = {https://computo.sfds.asso.fr/template-computo-quarto},
   doi = {xxxx},
   issn = {2824-7795},
@@ -3695,6 +3697,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 
