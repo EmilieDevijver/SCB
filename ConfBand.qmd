@@ -1031,8 +1031,8 @@ if (run == TRUE){
   perf = perf[vec.L,]
   rownames(perf) = vec.L
   colnames(perf) = vec.n
-  save(perf, file = "Res_Tab2.RData")
-} else {load('Res_Tab2.RData')}
+  save(perf, file = "res_Tab2.RData")
+} else {load('res_Tab2.RData')}
 
 perf %>%
   kable("latex", booktabs = TRUE) %>%
@@ -1693,3 +1693,5 @@ for (basis in c("Fourier", "Legendre", "Splines")){
   axis(1, at = seq(0,1,length.out = 7), labels = c("1", "2", "3", "4", "5", "6", "7"))
 }
 ```
+
+ 
