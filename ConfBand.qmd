@@ -1358,7 +1358,7 @@ if (run == TRUE){
     
   }
   save(perf, file = "Res_Tab_other.RData")
-} else {load("res_Tab_other.RData") } ### charger les données
+} else {load("Res_Tab_other.RData") } ### charger les données
 perf.Fourier = cbind(perf[vec.L,,1,1],perf[vec.L,,2,1])
 rownames(perf.Fourier) = vec.L
 colnames(perf.Fourier) = c(" 50/10", "150/10", "50/40", "150/40")
