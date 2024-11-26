@@ -1477,7 +1477,7 @@ if (run == TRUE){
   
   save(perf.sel, file = "Res_Tab_other_2.RData")
   save(dfBandWidth, file = "Red_Tab_other_2_width.RData")
-} else {load("res_Tab_other_2.RData") } ### charger les données
+} else {load("Res_Tab_other_2.RData") } ### charger les données
 perf.Fourier = matrix(perf.sel[,,,1], nrow=2, ncol=1)
 rownames(perf.Fourier) = c('L tilde', 'L.CV')
 
