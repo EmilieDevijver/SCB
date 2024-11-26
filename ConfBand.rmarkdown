@@ -36,8 +36,6 @@ format:
   
 ---
 
-
-
 ```{r}
 colorize <- function(x, color) {
  if (knitr::is_latex_output()) {
@@ -48,6 +46,9 @@ colorize <- function(x, color) {
  } else x
 }
 ```
+
+
+
 
 # Introduction
 
@@ -480,6 +481,9 @@ In this section, we illustrate the different statements provided along the paper
 To illustrate the model, we simulate a regression functional model with $n=50$ points per individual and $N=40$ individuals. In @fig-BasisModel, the function $f$ (red curve) belongs to the Fourier (resp. Legendre and Spline) family with $L^*=11$ and the noisy observations $y_{ij}$ (black curves) have a functional noise in dimension $L^{\varepsilon}=20$, also in the Fourier (resp. Legendre and Spline) family on the left plot (resp. middle and right). 
 
 
+
+
+
 ```{r message=FALSE, fig.height=3, fig.width=7}
 #| label: fig-BasisModel
 #| fig-cap: "Illustrative example. We generate a regression functional model in the Fourier (left), Legendre (middle) and Splines (right) families. The red curve corresponds to the true function, and the gray curves correspond to noisy observations."
@@ -578,10 +582,16 @@ ggplot(data = df, aes(x = Time, y = f, color = type, group = ind)) +
   facet_grid(~basis)
 ```
 
+
+
+
 @prp-proj and @prp-proj2 are illustrated in Appendix. 
 
 <!--@fig-estimatorL displays estimators calculated with different dimensions $L$. Data are generated with $L^*=11$, $L^\varepsilon=20$, $n=50$ and $N=40$. The true function and its projection $\underline f^{L,L^*}$ are in cyan, and the estimator $\underline{\hat{f}_{}}^{L,L^*}$ is in red. We compute it for the three families, Legendre, Fourier and splines. 
 In all cases, the estimators are very precise when considering the relevant dimension, but estimating a function of dimension $L^*$ with a function of dimension $L<L^*$ is not consistent. Note that the performance of the estimator for the spline family is also good, even if the family is not orthonormal, because we work here at the level of the function (and not at the level of the coefficients). 
+
+
+
 
 
 ```{r , out.height = "50%", fig.width=7}
@@ -652,6 +662,9 @@ ggplot(data = df, aes(x = Time, y = f, color = type)) +
   facet_grid(L~basis)
 
 ```
+
+
+
 !-->
 
 ## Confidence band for a fixed level {#sec-simu-band}
@@ -660,6 +673,9 @@ The band derived in @thm-sunLoader is illustrated on @fig-bandL. It displays on 
 We also evaluate numerically the levels of the obtained confidence bands. For this, 1000 datasets are simulated, the confidence band is estimated for each of them. 
 The empirical confidence level is then evaluated as the proportion of confidence bands that contain the true function. @tbl-levelL presents the empirical confidence levels for different values of $L$ and two sample sizes $n=50$ and $n=150$, with $N=10$, $N=40$ and $N=60$. 
 When $N=40$ and $N=60$, the level is the expected one whatever the value of $L$, especially when $L<L^*$ and $N=40$,  but also when $L>L^\varepsilon$. We will see in the next sections that this will not be the case for the debiased confidence band. When $N=10$, the level is too small, especially when $L$ is large. This might be due to the the large number of parameters to be estimated in the covariance matrix $C$, with a small number of observations $N$. 
+
+
+
 
 
 ```{r }
@@ -794,7 +810,6 @@ p3 <- ggplot() +
 ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 ```
 
-
 ```{r}
 #| label: tbl-levelL
 #| tbl-cap: "The confidence level of the confidence band CB is evaluated from 1000 repetitions. Confidence bands are calculated with the Fourier family (a), Legendre family (b) and Splines family (c), for several L in rows and several n and N in columns, for alpha = 0.05."
@@ -872,10 +887,16 @@ perf.S %>%
 
 ```
 
+
+
+
 ## Confidence bands by correcting the bias {#sec-simudebias}
 We illustrate the results given in @prp-CBf. 
 In @fig-Lstar, top row, we plot the confidence bands obtained for different dimensions $L \in \{3,5,11,15,21\}$ with Fourier, Legendre and Splines families and $\alpha=\beta=\sqrt{0.05}\approx 0.22$. We can see that all the confidence bands are alike. Especially, they are unbiased, even for $L=3$. A larger dimension $L$ provides a smoother band. 
 On the middle and bottom rows of @fig-Lstar, we illustrate the two terms that enter the confidence band, $t \mapsto \hat d_1^L(t)$ and $t\mapsto \hat d_2^{L,L_{\max}}(t)$. Their behavior is the same along time. The function $\hat d_1^L(t)$ can be seen as a variance, this is why it is larger near 0 and 1 where there are less observations. The function $\hat d_2^{L,L_{\max}}(t)$ is smaller than $\hat d_1^L(t)$ because it controls the remaining rest after the projection. Note that as expected when $L>L^\varepsilon$, $\hat d_2^{L,L_{\max}}(t)$ is close to 0. As explained before, the influence of $L$ is not the same for the two functions. When $L$ increases, $\hat d_1^L(t)$ increases while $\hat d_2^{L,L_{\max}}(t)$ decreases. 
+
+
+
 
 ```{r, fig.height = 7, fig.width=7}
 #| label: fig-Lstar
@@ -995,7 +1016,13 @@ ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 
 ```
 
+
+
+
 In @tbl-levLstar, we simulate 1000 repeated datasets with the Legendre family and with two sample sizes $n=50$ and $n=150$ and $N=40$. For each dataset, we compute the confidence band defined in @prp-CBf with a theoretical confidence level of $1-\alpha\beta=0.95$ and for different values of $L$. Then the confidence level is approximated as the proportion of confidence bands containing the true function $f$. Remark that when $L<L^{\varepsilon}$, the level is the expected one, that is 0.95. When $L>L^{\varepsilon}$, the level is not more ensured, as explained before. Indeed the term $d^{L,L^{\max}}$ is mainly equal to 0, and the level is close to $1-\alpha$ instead of $1-\alpha\beta$. This is not the case for the band in @sec-bandSun, as this is due to the correction of the bias. 
+
+
+
 ```{r}
 #| label: tbl-levLstar
 #| tbl-cap: "Illustrative example. We display the level of confidence for the proposed confidence band CB2, for several L in rows and several n in columns, N=40, for alpha=0.2 and beta=0.2 (and then in total the confidence band reaches the level 0.95), and considering the Legendre family."
@@ -1040,8 +1067,14 @@ perf %>%
 
 
 
+
+
+
 We illustrate the different terms involved in @eq-def-Lhat. In @fig-dLLmax, we plot for a given dataset, the infinity norm of the width of the band $\hat d^L(t) + \hat d^{L,L_{\max}}(t)$ (top), of $\hat d^L(t)$ (middle) and $\hat d^{L,L_{\max}}(t)$ (bottom) functions obtained with the Fourier (left column), Legendre (middle column) and Spline (right column) basis. As already said, $\|\hat d^L\|_{\infty}$ increases with $L$ while $\|\hat d^{L,L_{\max}}\|_{\infty}$ decreases (and is zero when $L>L^{\varepsilon}$). The width of the band wrt $L$ does not have a $U$-shape, as expected. It is thus difficult to minimize this criterion and the selection of $\hat L$ is thus not stable. But again, whatever the value of $\hat L$, the corresponding band is debiased in the collection. `r colorize("We will see in the next section that its width is smaller than standard approaches.", "red")` 
 The performance of the selection is `r colorize("also", "red")` illustrated in the next section. 
+
+
+
 
 ```{r, out.height = "50%", fig.width=7}
 #| label: fig-dLLmax
@@ -1081,6 +1114,9 @@ ggplot(df, aes(x = dimension, y = Norm, fill = type)) +
 
 ```
 
+
+
+
 ## Model selection criterion {#sec-simumodsel}
 
 We `r colorize("want to", "red")` evaluate the performance of the `r colorize("two", "red")` selection criteria introduced in this paper.
@@ -1088,6 +1124,9 @@ We `r colorize("want to", "red")` evaluate the performance of the `r colorize("t
 
 `r colorize("First, we consider the second approach presented in @sec-modesel. ", "red")`
 In @fig-critlast, we illustrate the behavior of the selection criterion introduced in @sec-modsel on simulated data, with $\lambda=1$ for the three basis. We can see that $\tilde L$ is overestimated. When considering nested spaces, it ensures that $\tilde L$ tends to be larger than $L^*$ and thus the confidence band is automatically unbiased.
+
+
+
 
 
 ```{r, fig.height = 3, fig.width=7}
@@ -1129,10 +1168,16 @@ ggplot(dfCriterion, aes(x = dimension, y = criterion, color = lambdas)) +
 
 ```
 
+
+
+
 `r colorize("We compare the two strategies $CB_2$ and $CB_3$ with some standard approaches. More precisely, ", "red")`
 we  simulate 100 repeated datasets. The different confidence bands and the norm of their widths are computed for several $L$. We apply the selection criteria and plot the distribution of the estimated dimension in @fig-modelsel, for the three basis families, for several model selection criteria: $\hat L$, $\tilde L$,  cross validation and  hard thresholding. The dimension $\hat L$ is almost always larger than the true $L^*=11$. The fact that it is larger is not a problem because the selected band is unbiased and has the correct level as soon as $L^\varepsilon$ is large. However, the criterion tends to select a band that is (too) smooth.
 We can see that the selected dimension $\tilde{L}$ is smaller in distribution, and closer to the true value than $\hat{L}$. In addition, as we then use the confidence band of @sec-bandSun, the confidence level is guaranteed to be as expected.
 The model selected by  cross validation is rather good, for all the  basis considered. On the other hand, the model selected by  hard thresholding is not good,  particularly for a non orthonormal basis, which makes sense in relation to  @prp-proj. 
+
+
+
 
 ```{r, fig.height = 7, fig.width=7}
 #| label: tbl-levLstar2
@@ -1253,6 +1298,7 @@ cpt %>%
   kable("latex", booktabs = TRUE) %>%
   add_header_above(c("model" = 1, "Legendre" = 1, "Fourier" = 1, "Splines" = 1))
 ```
+
 ```{r, fig.height = 7, fig.width=7}
 #| label: fig-modelsel
 #| fig-cap: "Illustrative example with $N=40$. From 100 datasets, we calculate the distribution of the estimated dimension L, for four model selection criteria: from top to bottom, the debiased band proposed in CB2 with  Lhat, the band CB3 with  Ltilde, the cross validation and hard thresholding methods.  The true dimension is $L^* = 11$. "
@@ -1282,10 +1328,16 @@ grid.arrange(p1, p2, p3, p4, nrow = 4)
 ```
 
 
+
+
+
 The reformulation of the band around $\underline{\hat f}_2^{ L_{\max}, L^*}$ is close to the band presented in @sec-bandSun for $L=L_{\max}$, that is a band centered around $\underline{\hat f}^{ L_{\max}, L^*}$. A natural question is to understand what is the gain by doing so instead of using the band from @sec-bandSun with $L=L_{\max}$, namely the band $\left [\underline{\hat f}^{ L_{\max}, L^*}(t)-\hat d^{L_{\max}}(t); \underline{\hat f}^{ L_{\max}, L^*}(t)+\hat d^{L_{\max}}(t)\right]$. To do that, we have to understand the behavior of the different terms. As it is difficult to compare theoretically the width of the two bands, we compare them using simulations. 
 For 100 repeated datasets, we compute several  confidence bands:  the  $CB_1$ band constructed in @sec-bandSun with $L_{\max}$, the  $CB_{2}$ band defined in @prp-CBf with $\hat L$,  the  $CB_{3}$ band defined in @sec-modsel with $\tilde L$ and the ideal (and not accessible) band constructed in @sec-bandSun with the true $L^*$. In @fig-width-2, we present  boxplots of the norms of the band width with $\hat L$,  $L_{\max}$, $L^*$  and $\tilde{L}$. 
 The width of the confidence band with the true $L^*$ is smaller, which is expected but unfortunately not achievable.  The width of the confidence band $CB_1$  is smaller than that of the band $CB_2$. This can be explained by the fact that we estimate two different quantities, on smaller datasets, for more conservative levels ($1-\alpha$ and $1-\beta$ respectively) in order to finally achieve the confidence level of $1-\alpha\beta$. This also explains why the cross validation and hard-thresholding methods, which also divide the sample into two parts, do not give good results either.  The model given by the heuristic model selection criterion $\tilde crit$ achieves good performance. 
 Note that the width of the selected model $\tilde L$ is better than the width of the confidence band with a large level $L_{\max}$, which one should have used to avoid model selection. 
+
+
+
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-width-2
@@ -1301,9 +1353,15 @@ ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) +
 ```
 
 
+
+
+
 ## Generalization out of the model {#sec-gen}
 
 We now illustrate the behaviour of the bands when the basis used for estimation is poorly specified. We simulate 1000 data sets with a spline basis and estimate the confidence bands with the Fourier and Legendre basis, for different values of $n$ and $N$. The coverage rates are presented in @tbl-levelL-2. The Fourier basis does not give a correct rate. On the other hand, the Legendre basis gives very satisfactory coverage rates for $L>20$.  
+
+
+
 
 
 
@@ -1376,8 +1434,14 @@ pref.Legendre %>%
 ```
 
 
+
+
+
 Next, we illustrate the $\tilde L$ dimension selection method and compare it to the cross-validation method.  @tbl-levelL-3 presents the coverage rates of the corresponding confidence bands estimated with the Fourier and Legendre basis, in the case $N=40$ and $n=150$. Once again, we see that the Fourier basis does not give good results, either by cross-validation or by $\tilde L$. On the other hand, with the Legendre basis, the $\tilde L$ method gives a satisfactory coverage rate, even if it is underestimated, whereas the cross-validation method is very poor. 
 Moreover, the widths of the confidence bands selected with $\tilde L$ and by cross validation are represented by boxplot in @fig-width-3. It can be seen that the cross-validation approach provides wider bands, even though their confidence level is not guaranteed. The method proposed in this paper provides a narrower band with a correct level of confidence. We thus recommend to use the Legendre family with the criteria $\tilde L$. 
+
+
+
 
 
 ```{r}
@@ -1494,8 +1558,6 @@ pref.Splines %>%
 
 ```
 
-
-
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-width-3
 #| fig-cap: "Illustrative example. The confidence level of the confidence band is evaluated from 100 repetitions. Data is generated using a Splines basis, and confidence bands are calculated with the Fourier (a) and Legendre (b) families, for several model selection criterion in rows, L in rows and several n and N in columns."
@@ -1506,12 +1568,18 @@ ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) +
   facet_wrap(~basis, scales = "free_y")
 ```
 
+
+
+
 # Real data analysis {#sec-realdata}
 
 In this section, we illustrate the proposed method on the Berkeley Growth Study data. 
 It consists of the heights in centimeters of 39 boys at 31 ages from 1 to 18. 
 We approximate these curves by the 3 basis Legendre, Splines and Fourier.
 We select the level of each basis using the method introduced in @sec-modsel. 
+
+
+
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-realdata
@@ -1576,6 +1644,9 @@ res_growth %>%
   kable("latex", booktabs = TRUE) %>%
   add_header_above(c(" " = 1, "Basis" = 3))
 ```
+
+
+
 
 In @fig-realdata, we display the confidence bands associated `r colorize("with", "red")` <!--to!--> @sec-bandSun in black and `r colorize("those", "red")` <!--the one!--> associated `r colorize("with", "red")` <!--to!--> @sec-modsel, for the three basis. As the data is not periodic, the Fourier basis is meaningless, `r colorize("as is", "red")` <!--and so is!--> the associated confidence band, whatever the dimension considered. Splines and Legendre basis give similar confidence bands. 
 `r colorize("By", "red")` <!--When!--> analyzing the width of the bands in @tbl-realdata, compared `r colorize("to that", "red")` <!--with the one!--> obtained with $L_{\max}$, we `r colorize("find", "red")` <!--see!--> that they are less smooth but also smaller, and from our empirical study we guess that it makes a trade-off between bias and variance. 
@@ -1658,6 +1729,9 @@ The last equality holds thanks to the independence of the two sub-samples.
 @prp-proj and @prp-proj2 are illustrated in @fig-coefficients. The true dimension is $L^*=11$. Three families are considered, Fourier, Legendre and Splines. The plots display the absolute difference between the coefficients $\mu_\ell^{L^*}$ and the projected coefficients $\underline{\mu}^{L,L^*}$, for different $\ell$ in x-axis and for different values of $L$ and $n$ in the y-axis, namely a case with $L<L^*$ and two values of $n$: $L=7, n=20$ and $L=7, n=100$; and a case with $L>L^*$ and two values of $n$: $L=15, n=20$ and $L=15, n=100$. The absolute difference is represented as a gradient of color, this gradient being adapted to each functional family. We can see that as Legendre (resp. Fourier) are orthonormal (resp. orthogonal) families, the differences are close to $0$ when $L=15$, whatever the values of $n$. When $L<L^*$, the difference is close to $0$ when $n$ is large. 
 This property does not hold for the spline family, which is not orthogonal. 
 
+
+
+
 ```{r, fig.height=5, fig.width=7}
 #| label: fig-coefficients
 #| fig-cap: "Illustrative example. The true dimension is 11, we generate the coefficients with three families, Fourier (which is orthogonal), Legendre (which is orthonormal) and the splines (which are not orthogonal wrt the standard scalar product). In the y-axis, two dimensions of the family (7 or 15) and two numbers of timepoints (20 or 100) are compared. We plot in x-axis the value of the absolute difference between the true coefficients and their approximations for the first 7 coefficients of the basis. The color scale is adapted to each functional basis. "
@@ -1693,4 +1767,3 @@ for (basis in c("Fourier", "Legendre", "Splines")){
 }
 ```
 
- 
