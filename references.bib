@@ -10,29 +10,21 @@ pages = {115-140},
 year = {2017}
 }
 
-
-@misc{Jacques2023,
+@article{Jacques2023,
       title={Simultaneous predictive bands for functional time series using minimum entropy sets}, 
       author={Nicolás Hernández and Jairo Cugliari and Julien Jacques},
-      year={2023},
-      eprint={2105.13627},
-      archivePrefix={arXiv},
-      primaryClass={stat.ME}
+      year={2024},
+      journal = {Communications in Statistics - Simulation and Computation},
+      pages = {1-25}
 }
 
-
 @article{BASNA2022104868,
+author = {Rani Basna and Hiba Nassar and Krzysztof Podgórski},
 title = {Data driven orthogonal basis selection for functional data analysis},
 journal = {Journal of Multivariate Analysis},
 volume = {189},
 pages = {104868},
 year = {2022},
-issn = {0047-259X},
-doi = {https://doi.org/10.1016/j.jmva.2021.104868},
-url = {https://www.sciencedirect.com/science/article/pii/S0047259X21001469},
-author = {Rani Basna and Hiba Nassar and Krzysztof Podgórski},
-keywords = {Functional data analysis, Machine learning, Splines},
-abstract = {Functional data analysis is typically performed in two steps: first, functionally representing discrete observations, and then applying functional methods, such as the functional principal component analysis, to the so-represented data. While the initial choice of a functional representation may have a significant impact on the second phase of the analysis, this issue has not gained much attention in the past. Typically, a rather ad hoc choice of some standard basis such as Fourier, wavelets, splines, etc. is used for the data transforming purpose. To address this important problem, we present its mathematical formulation, demonstrate its importance, and propose a data-driven method of functionally representing observations. The method chooses an initial functional basis by an efficient placement of the knots. A simple machine learning style algorithm is utilized for the knot selection and recently introduced orthogonal spline bases - splinets - are eventually taken to represent the data. The benefits are illustrated by examples of analyses of sparse functional data.}
 }
 
 @book{kokoszka2017introduction,
@@ -41,10 +33,24 @@ abstract = {Functional data analysis is typically performed in two steps: first,
   isbn={9781498746342},
   lccn={2016045222},
   series={Chapman \& Hall / CRC numerical analysis and scientific computing},
-  url={https://books.google.dk/books?id=HIxIvgAACAAJ},
   year={2017},
   publisher={CRC Press}
 }
+
+@article{Chen2015,
+author = {Ming Chen and Qiongxia Song},
+title = {{Simultaneous inference of the mean of functional time series}},
+volume = {9},
+journal = {Electronic Journal of Statistics},
+number = {2},
+publisher = {Institute of Mathematical Statistics and Bernoulli Society},
+pages = {1779 -- 1798},
+keywords = {confidence bands, functional time series, high-frequency data, long-run variance, Nonparametric regression, Spline},
+year = {2015},
+doi = {10.1214/15-EJS1052},
+URL = {https://doi.org/10.1214/15-EJS1052}
+}
+
 
 
 @article{LI2022104806,
@@ -53,13 +59,7 @@ journal = {Journal of Multivariate Analysis},
 volume = {188},
 pages = {104806},
 year = {2022},
-note = {50th Anniversary Jubilee Edition},
-issn = {0047-259X},
-doi = {https://doi.org/10.1016/j.jmva.2021.104806},
-url = {https://www.sciencedirect.com/science/article/pii/S0047259X21000841},
 author = {Yehua Li and Yumou Qiu and Yuhang Xu},
-keywords = {Functional data analysis, High-dimensional statistics, Multi-level modeling, Spatial dependence},
-abstract = {Functional data analysis (FDA), which is a branch of statistics on modeling infinite dimensional random vectors resided in functional spaces, has become a major research area for Journal of Multivariate Analysis. We review some fundamental concepts of FDA, their origins and connections from multivariate analysis, and some of its recent developments, including multi-level functional data analysis, high-dimensional functional regression, and dependent functional data analysis. We also discuss the impact of these new methodology developments on genetics, plant science, wearable device data analysis, image data analysis, and business analytics. Two real data examples are provided to motivate our discussions.}
 }
 
 @article{jacques2022,
@@ -71,12 +71,7 @@ abstract = {Functional data analysis (FDA), which is a branch of statistics on m
     pages = {969-986},
     year = {2022},
     month = {04},
-    abstract = "{With the emergence of digital sensors in sports, all cyclists can now measure many parameters during their effort, such as speed, slope, altitude, heart rate or pedalling cadence. The present work studies the effect of these parameters on the average developed power, which is the best indicator of cyclist performance. For this, a cumulative logistic model for ordinal response with functional covariate is proposed. This model is shown to outperform competitors on a benchmark study, and its application on cyclist data confirms that pedalling cadence is a key performance indicator. However, maintaining a high cadence during long effort is a typical characteristic of high-level cyclists, which is something on which amateur cyclists can work to increase their performance.}",
-    issn = {0035-9254},
-    doi = {10.1111/rssc.12563},
-    url = {https://doi.org/10.1111/rssc.12563},
-    eprint = {https://academic.oup.com/jrsssc/article-pdf/71/4/969/49459062/jrsssc\_71\_4\_969.pdf},
-}
+   }
 
 @article{Telschow2023,
 author = {Fabian J. E. Telschow and Dan Cheng and Pratyush Pranav and Armin Schwartzman},
@@ -84,12 +79,8 @@ title = {{Estimation of expected Euler characteristic curves of nonstationary sm
 volume = {51},
 journal = {The Annals of Statistics},
 number = {5},
-publisher = {Institute of Mathematical Statistics},
 pages = {2272 -- 2297},
-keywords = {Euler characteristic, Gaussian related fields, Lipschitz–Killing curvatures, Random field theory},
 year = {2023},
-doi = {10.1214/23-AOS2337},
-URL = {https://doi.org/10.1214/23-AOS2337}
 }
 
 
@@ -100,11 +91,6 @@ journal = {Journal of the Royal Statistical Society: Series B (Statistical Metho
 volume = {73},
 number = {4},
 pages = {531-558},
-keywords = {Adaptive inference, Confidence balls, Functional data, Non-parametric mean estimation, Oracle inequalities, Stochastic processes, Thresholded estimators},
-doi = {https://doi.org/10.1111/j.1467-9868.2010.00768.x},
-url = {https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-9868.2010.00768.x},
-eprint = {https://rss.onlinelibrary.wiley.com/doi/pdf/10.1111/j.1467-9868.2010.00768.x},
-abstract = {Summary.  We propose and analyse fully data-driven methods for inference about the mean function of a Gaussian process from a sample of independent trajectories of the process, observed at random time points and corrupted by additive random error. Our methods are based on thresholded least squares estimators relative to an approximating function basis. The variable threshold levels are determined from the data and the resulting estimates adapt to the unknown sparsity of the mean function relative to the approximating basis. These results are obtained via novel oracle inequalities, which are further used to derive the rates of convergence of our mean estimates. In addition, we construct confidence balls that adapt to the unknown regularity of the mean and covariance function of the stochastic process. They are easy to compute since they do not require explicit estimation of the covariance operator of the process. A simulation study shows that the new method performs very well in practice and is robust against large variations that may be introduced by the random-error terms.},
 year = {2011}
 }
 
@@ -115,12 +101,7 @@ journal = {Journal of Statistical Planning and Inference},
 volume = {216},
 pages = {70-94},
 year = {2022},
-issn = {0378-3758},
-doi = {https://doi.org/10.1016/j.jspi.2021.05.008},
-url = {https://www.sciencedirect.com/science/article/pii/S0378375821000598},
 author = {Fabian J.E. Telschow and Armin Schwartzman},
-keywords = {Simultaneous inference, Confidence bands, Random fields, Functional data, Climate},
-abstract = {We propose a construction of simultaneous confidence bands (SCBs) for functional parameters over arbitrary dimensional compact domains using the Gaussian Kinematic formula of t-processes (tGKF). Although the tGKF relies on Gaussianity, we show that a central limit theorem (CLT) for the parameter of interest is enough to obtain asymptotically precise covering even if the observations are non-Gaussian processes. As a proof of concept we study the functional signal-plus-noise model and derive a CLT for an estimator of the Lipshitz–Killing curvatures, the only data-dependent quantities in the tGKF. We further discuss extensions to discrete sampling with additive observation noise using scale space ideas from regression analysis. Our theoretical work is accompanied by a simulation study comparing different methods to construct SCBs for the population mean. We show that the tGKF outperforms state-of-the-art methods with precise covering for small sample sizes, and only a Rademacher multiplier-t bootstrap performs similarly well. A further benefit is that our SCBs are computational fast even for domains of dimension greater than one. Applications of SCBs to diffusion tensor imaging (DTI) fibers (1D) and spatio-temporal temperature data (2D) are discussed.}
 }
 
 
@@ -130,28 +111,18 @@ journal = {Journal of Multivariate Analysis},
 volume = {189},
 pages = {104879},
 year = {2022},
-issn = {0047-259X},
-doi = {https://doi.org/10.1016/j.jmva.2021.104879},
-url = {https://www.sciencedirect.com/science/article/pii/S0047259X21001573},
 author = {Jacopo Diquigiovanni and Matteo Fontana and Simone Vantini},
-keywords = {Conformal Prediction, Distribution-free prediction set, Exact prediction set, Finite-sample prediction set, Functional data, Prediction band},
-abstract = {Motivated by the pressing request of methods able to create prediction sets in a general regression framework for a multivariate functional response, we propose a set of conformal predictors that produce finite-sample either valid or exact multivariate simultaneous prediction bands under the mild assumption of exchangeable regression pairs. The fact that the prediction bands can be built around any regression estimator and that can be easily found in closed form yields a very widely usable method, which is fairly straightforward to implement. In addition, we first introduce and then describe a specific conformal predictor that guarantees an asymptotic result in terms of efficiency and inducing prediction bands able to modulate their width based on the local behavior and magnitude of the functional data. The method is investigated and analyzed through a simulation study and a real-world application in the field of urban mobility.}
 }
 
 
 @article{CB_survivalAnalysis2022,
 title = "Confidence bands in survival analysis",
 abstract = "Background Providing estimates of uncertainty for statistical quantities is important for statistical inference. When the statistical quantity of interest is a survival curve, which is a function over time, the appropriate type of uncertainty estimate is a confidence band constructed to account for the correlation between points on the curve, we will call this a simultaneous confidence band. This, however, is not the type of confidence band provided in standard software, which is constructed by joining the confidence intervals at given time points. Methods We show that this type of band does not have desirable joint/simultaneous coverage properties in comparison to simultaneous bands. Results There are different ways of constructing simultaneous confidence bands, and we find that bands based on the likelihood ratio appear to have the most desirable properties. Although there is no standard software available in the three major statistical packages to compute likelihood-based simultaneous bands, we summarise and give code to use available statistical software to construct other simultaneous forms of bands, which we illustrate using a study of colon cancer. Conclusions There is a need for more user-friendly statistical software to compute simultaneous confidence bands using the available methods.",
-keywords = "ESTIMATOR, BOOTSTRAP",
 author = "Sachs, {Michael C.} and Adam Brand and Gabriel, {Erin E.}",
 year = "2022",
-doi = "10.1038/s41416-022-01920-5",
-language = "English",
 volume = "127",
 pages = "1636–1641 ",
 journal = "The British journal of cancer. Supplement",
-issn = "0007-0920",
-publisher = "nature publishing group",
 }
 
 
@@ -173,10 +144,6 @@ publisher = "nature publishing group",
   volume    = {303},
   publisher = {Springer},
   year      = {1993},
-  isbn      = {978-3-540-50627-0},
-  timestamp = {Thu, 18 Jul 2019 17:10:46 +0200},
-  biburl    = {https://dblp.org/rec/books/daglib/0025268.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
 
@@ -200,15 +167,11 @@ year = {1999}
 
 @article{sun1994,
 author = "Sun, Jiayang and Loader, Clive R.",
-doi = "10.1214/aos/1176325631",
-fjournal = "Annals of Statistics",
 journal = "Ann. Statist.",
 month = "09",
 number = "3",
 pages = "1328--1345",
-publisher = "The Institute of Mathematical Statistics",
 title = "Simultaneous Confidence Bands for Linear Regression and Smoothing",
-url = "https://doi.org/10.1214/aos/1176325631",
 volume = "22",
 year = "1994"
 }
@@ -218,7 +181,10 @@ year = "1994"
 @article{Liebl2019,
 author = "Liebl, D and Reimherr, M.",
  title = "Fast and fair simultaneous confidence bands for functional parameters",
-year = "2019"
+year = "2023",
+journal = "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+volume = "85",
+pages = "842-868"
 }
 
 @article{Goldenshluger2011,
@@ -233,19 +199,26 @@ pages = "1608-1632"}
 author = "Lacour, C. and Massart, P. and Rivoirard, V.",
 title = "Estimator selection: a new method with applications to kernel density estimation",
 year = "2017",
-journal = "Sankhya A"}
+journal = "Sankhya A",
+volume = "79",
+pages = "298-335"
+}
 
 
 @article{GoeppSubmitted,
 author = "Goepp, V. and Bouaziz, O. and Nuel, G.",
 title = "Spline regression with automatic knot selection",
-year = "Submitted"}
+year = "2025",
+journal = "Computational Statistics and Data Analysis",
+volume = "202"}
 
 @article{OSullivan1986,
 author = "O'Sullivan, F..",
 title = "A statistical perspective on Ill-posed inverse problems",
 year = "1986",
-journal = "Statistical Science"}
+journal = "Statistical Science",
+volume = "1",
+pages = "502-518"}
 
 @article{ANEIROS2022104871,
 title = {Variable selection in functional regression models: A review},
@@ -253,13 +226,7 @@ journal = {Journal of Multivariate Analysis},
 volume = {188},
 pages = {104871},
 year = {2022},
-note = {50th Anniversary Jubilee Edition},
-issn = {0047-259X},
-doi = {https://doi.org/10.1016/j.jmva.2021.104871},
-url = {https://www.sciencedirect.com/science/article/pii/S0047259X21001494},
 author = {Germán Aneiros and Silvia Novo and Philippe Vieu},
-keywords = {Functional Data Analysis, Regression, Variable selection},
-abstract = {Despite of various similar features, Functional Data Analysis and High-Dimensional Data Analysis are two major fields in Statistics that grew up recently almost independently one from each other. The aim of this paper is to propose a survey on methodological advances for variable selection in functional regression, which is typically a question for which both functional and multivariate ideas are crossing. More than a simple survey, this paper aims to promote even more new links between both areas.}
 }
 
 @book{Hastie2001,
@@ -272,13 +239,19 @@ editor = "Springer New York"}
 author = "Claeskens, G. and Van Keilegom, I.",
 title = "Bootstrap confidence bands for regression curves and their derivatives",
 year = "2003",
-journal = "Ann. Stat."}
+journal = "Ann. Stat.",
+volume = {31},
+pages = {1852-1884"}
+}
 
 @article{Neumann1998,
 author = "Neumann, M. and Polzehl, J.",
 title = "Simultaneous bootstrap confidence bands in nonparametric regression",
 year = "1998",
-journal = "J Nonparametr Statist"}
+journal = "J Nonparametr Statist", 
+volume = {9},
+pages = {307-333},
+}
 
 @article{Hall1991,
 author = "Hall, P.",
@@ -291,13 +264,17 @@ journal = "Probab Theory Related Fields"}
 author = "Xia, Y.",
 title = "Bias-corrected confidence bands in nonparametric regression",
 year = "1998",
-journal = "J.R. Stat. Soc. Ser. B"}
+journal = "J.R. Stat. Soc. Ser. B",
+volume  = {60},
+pages = "797-811"}
 
 @article{Zhou1998,
 author = "Zhou, S. and Shen, X. and Wolfe, D.A.",
 title = "Local asymptotics for regression splines and confidence regions",
 year = "1998",
-journal = "Ann. Statist."}
+journal = "Ann. Statist.", 
+volume = "26",
+pages = "1760-1782"}
 
 
 @article{wang2022,
