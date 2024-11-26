@@ -1086,7 +1086,7 @@ ggplot(df, aes(x = dimension, y = Norm, fill = type)) +
 We `r colorize("want to", "red")` evaluate the performance of the `r colorize("two", "red")` selection criteria introduced in this paper.
 
 
-`r colorize("First, we consider the second approach presented in @sec-modesel. ", "red")`
+`r colorize("First, we consider the second approach presented in @sec-modsel. ", "red")`
 In @fig-critlast, we illustrate the behavior of the selection criterion introduced in @sec-modsel on simulated data, with $\lambda=1$ for the three basis. We can see that $\tilde L$ is overestimated. When considering nested spaces, it ensures that $\tilde L$ tends to be larger than $L^*$ and thus the confidence band is automatically unbiased.
 
 
