@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Emilie Devijver">
 <meta name="author" content="Adeline Samson">
-<meta name="dcterms.date" content="2025-09-07">
+<meta name="dcterms.date" content="2025-09-14">
 <meta name="keywords" content="functional data, repeated data, confidence band, Kac-Rice formulae, bias, dimension selection">
 
 <title>Should we correct the bias in Confidence Bands for Repeated Functional Data?</title>
@@ -85,14 +85,15 @@ div.csl-indent {
 <script src="ConfBand_files/libs/clipboard/clipboard.min.js"></script>
 <script src="ConfBand_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="ConfBand_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="ConfBand_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="ConfBand_files/libs/quarto-html/popper.min.js"></script>
 <script src="ConfBand_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="ConfBand_files/libs/quarto-html/anchor.min.js"></script>
 <link href="ConfBand_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="ConfBand_files/libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="ConfBand_files/libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="ConfBand_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="ConfBand_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="ConfBand_files/libs/bootstrap/bootstrap-f3ed8f0e280e21aaf98f6a3abef935a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="ConfBand_files/libs/bootstrap/bootstrap-15999191899daabc91ba3e56b60d4cde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="ConfBand_files/libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="ConfBand_files/libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <style>
@@ -142,7 +143,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -203,14 +204,14 @@ ISSN 2824-7795</p>
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 7, 2025</p>
+        <p class="date">September 14, 2025</p>
       </div>
     </div>
                                     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">September 7, 2025</p>
+        <p class="date-modified">September 14, 2025</p>
       </div>
     </div>
       
@@ -296,14 +297,14 @@ ISSN 2824-7795</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>colorize <span class="ot">&lt;-</span> <span class="cf">function</span>(x, color) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>colorize <span class="ot">&lt;-</span> <span class="cf">function</span>(x, color) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">textcolor{%s}{%s}"</span>, color, x)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> } <span class="cf">else</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_html_output</span>()) {</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">sprintf</span>(<span class="st">"&lt;span style='color: %s;'&gt;%s&lt;/span&gt;"</span>, color,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> x)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> } <span class="cf">else</span> x</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="introduction" class="level1" data-number="1">
@@ -547,7 +548,7 @@ CB_2(\underline{f}^{L^*})=\left\{\forall t\in[0,1], \left[\underline{\hat f_2}^{
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fda)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(orthopolynom)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wavelets)</span>
@@ -639,7 +640,7 @@ CB_2(\underline{f}^{L^*})=\left\{\forall t\in[0,1], \left[\underline{\hat f_2}^{
 <span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> f, <span class="at">color =</span> type, <span class="at">group =</span> ind)) <span class="sc">+</span> </span>
 <span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
 <span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"obs"</span> <span class="ot">=</span> <span class="st">"lightgrey"</span>,<span class="st">"True"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-BasisModel" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -741,7 +742,7 @@ ggplot(data = df, aes(x = Time, y = f, color = type)) +
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>compute.c.L <span class="ot">=</span> <span class="cf">function</span>(data.scl, <span class="at">alpha =</span> <span class="fl">0.05</span>){</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>compute.c.L <span class="ot">=</span> <span class="cf">function</span>(data.scl, <span class="at">alpha =</span> <span class="fl">0.05</span>){</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">### data.scl: the rescaled data </span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">### alpha: the level for the confidence band</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  x_approx <span class="ot">=</span> <span class="fu">apply</span>(data.scl<span class="sc">$</span>y, <span class="dv">2</span>,<span class="at">FUN=</span><span class="cf">function</span>(yy){</span>
@@ -790,13 +791,13 @@ ggplot(data = df, aes(x = Time, y = f, color = type)) +
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  c.L.Lmax<span class="fl">.2</span> <span class="ot">=</span> <span class="fu">compute.c.L</span>(data.<span class="fl">2.</span>scl, alpha)</span>
 <span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  d.L.Lmax<span class="fl">.2</span> <span class="ot">=</span> c.L.Lmax<span class="fl">.2</span> <span class="sc">%*%</span> <span class="fu">sqrt</span>(cov.emp.rest<span class="sc">/</span><span class="fu">ncol</span>(data.<span class="fl">2.</span>scl<span class="sc">$</span>y))</span>
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(c.L.Lmax<span class="fl">.2</span>)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dfObs <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Time =</span> <span class="fu">double</span>(),</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dfObs <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Time =</span> <span class="fu">double</span>(),</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">basis =</span> <span class="fu">character</span>(),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">f =</span> <span class="fu">double</span>(),</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ind =</span> <span class="fu">integer</span>())</span>
@@ -868,7 +869,7 @@ ggplot(data = df, aes(x = Time, y = f, color = type)) +
 <span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dfdL, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> dL, <span class="at">group =</span> dimension, <span class="at">color =</span> dimension)) <span class="sc">+</span></span>
 <span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span>
 <span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-bandL" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -886,7 +887,7 @@ Figure&nbsp;2: Illustrative example. For the three families, resp. Fourier, Lege
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>run <span class="ot">=</span> <span class="cn">FALSE</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>vec.L <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">11</span>,<span class="dv">15</span>,<span class="dv">21</span>, <span class="dv">25</span>)</span>
@@ -953,7 +954,7 @@ Figure&nbsp;2: Illustrative example. For the three families, resp. Fourier, Lege
 <span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n/N"</span> <span class="ot">=</span> <span class="dv">6</span>))</span>
 <span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>perf.S <span class="sc">%&gt;%</span></span>
 <span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n/N"</span> <span class="ot">=</span> <span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n/N"</span> <span class="ot">=</span> <span class="dv">6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-levelL" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -981,7 +982,7 @@ Table&nbsp;1: The confidence level of the confidence band CB is evaluated from 1
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>CB2 <span class="ot">=</span> <span class="cf">function</span>(data, basis, L, <span class="at">Lmax =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">beta =</span> <span class="fl">0.05</span>){</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>CB2 <span class="ot">=</span> <span class="cf">function</span>(data, basis, L, <span class="at">Lmax =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">beta =</span> <span class="fl">0.05</span>){</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">### data: the observations, only the time-points and the individual functions</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">### basis: functional basis, to be chosen in 'Fourier', 'Splines'</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">### L: number of functional basis for the signal</span></span>
@@ -1090,7 +1091,7 @@ Table&nbsp;1: The confidence level of the confidence band CB is evaluated from 1
 <span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dfdLLmax, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> dLLmax, <span class="at">group =</span> dimension, <span class="at">color =</span> dimension), <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span> </span>
 <span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>( <span class="sc">~</span> basis) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"d.L.Lmax"</span>)</span>
 <span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-Lstar" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1109,7 +1110,7 @@ Figure&nbsp;3: Illustrative example. For a given dataset, we plot several confid
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>run <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>run <span class="ot">=</span> <span class="cn">FALSE</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (run <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  nb.repeat <span class="ot">=</span> <span class="dv">1000</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  n.test <span class="ot">=</span> <span class="dv">5000</span></span>
@@ -1144,7 +1145,7 @@ Figure&nbsp;3: Illustrative example. For a given dataset, we plot several confid
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>perf <span class="sc">%&gt;%</span></span>
 <span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-levLstar" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1163,7 +1164,7 @@ Table&nbsp;2: Illustrative example. We display the level of confidence for the p
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Norm =</span> <span class="fu">double</span>(),</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="fu">character</span>(),</span>
@@ -1193,7 +1194,7 @@ Table&nbsp;2: Illustrative example. We display the level of confidence for the p
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> dimension, <span class="at">y =</span> Norm, <span class="at">fill =</span> type)) <span class="sc">+</span></span>
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(type <span class="sc">~</span> basis, <span class="at">scales =</span> <span class="st">'free'</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(type <span class="sc">~</span> basis, <span class="at">scales =</span> <span class="st">'free'</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"L"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-dLLmax" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1216,7 +1217,7 @@ Figure&nbsp;4: Illustrative example. For a given dataset, we calculate the norm 
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>L.max <span class="ot">=</span> <span class="dv">30</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>L.max <span class="ot">=</span> <span class="dv">30</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dfCriterion <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">criterion =</span> <span class="fu">double</span>(),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">dimension =</span> <span class="fu">integer</span>(),</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">basis =</span> <span class="fu">character</span>())</span>
@@ -1247,7 +1248,7 @@ Figure&nbsp;4: Illustrative example. For a given dataset, we calculate the norm 
 <span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfCriterion, <span class="fu">aes</span>(<span class="at">x =</span> dimension, <span class="at">y =</span> criterion, <span class="at">color =</span> lambdas)) <span class="sc">+</span> </span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>basis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-critlast" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1266,7 +1267,7 @@ Figure&nbsp;5: Illustrative example. For a given simulated dataset, we show the 
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>run <span class="ot">=</span> <span class="cn">FALSE</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (run <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
@@ -1379,7 +1380,7 @@ Figure&nbsp;5: Illustrative example. For a given simulated dataset, we show the 
 <span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a>cpt <span class="sc">%&gt;%</span></span>
 <span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"model"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Legendre"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Fourier"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Splines"</span> <span class="ot">=</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"model"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Legendre"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Fourier"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Splines"</span> <span class="ot">=</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-levLstar2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1397,7 +1398,7 @@ Table&nbsp;3: Illustrative example. We display the level of confidence over 100 
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">'Res_Tab3_Lhat.RData'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">'Res_Tab3_Lhat.RData'</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> dfLhat, <span class="fu">aes</span>(<span class="at">x =</span> L, <span class="at">y =</span> Lhat)) <span class="sc">+</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span><span class="st">"identity"</span>)<span class="sc">+</span></span>
@@ -1416,7 +1417,7 @@ Table&nbsp;3: Illustrative example. We display the level of confidence over 100 
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">nrow =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">nrow =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-modelsel" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1435,12 +1436,12 @@ Figure&nbsp;6: Illustrative example with <span class="math inline">N=40</span>. 
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">'Res_Tab3_BandWidth.RData'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">'Res_Tab3_BandWidth.RData'</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfBandWidth, <span class="fu">aes</span>(<span class="at">x =</span> dimension, <span class="at">y =</span> Band.width)) <span class="sc">+</span> </span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>basis, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>basis, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-width-2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1462,7 +1463,7 @@ Figure&nbsp;7: Illustrative example. We display within boxplots the confidence b
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>run <span class="ot">=</span> <span class="cn">FALSE</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>vec.L <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">11</span>,<span class="dv">15</span>,<span class="dv">21</span>, <span class="dv">25</span>, <span class="dv">31</span>, <span class="dv">35</span>)</span>
@@ -1522,7 +1523,7 @@ Figure&nbsp;7: Illustrative example. We display within boxplots the confidence b
 <span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>pref.Legendre <span class="sc">%&gt;%</span></span>
 <span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n/N"</span> <span class="ot">=</span> <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n/N"</span> <span class="ot">=</span> <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-levelL-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1544,7 +1545,7 @@ Table&nbsp;4: Illustrative example. The confidence level of the confidence band 
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>run <span class="ot">=</span> <span class="cn">FALSE</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>vec.L <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">11</span>,<span class="dv">15</span>,<span class="dv">21</span>, <span class="dv">25</span>, <span class="dv">31</span>, <span class="dv">35</span>)</span>
@@ -1648,7 +1649,7 @@ Table&nbsp;4: Illustrative example. The confidence level of the confidence band 
 <span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>pref.Splines <span class="sc">%&gt;%</span></span>
 <span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n=150, N=40"</span> <span class="ot">=</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"L"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"n=150, N=40"</span> <span class="ot">=</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-levelL-3" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1669,10 +1670,10 @@ Table&nbsp;5: Illustrative example. The confidence level of the confidence band 
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"Res_Tab_other_2_width.RData"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"Res_Tab_other_2_width.RData"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfBandWidth, <span class="fu">aes</span>(<span class="at">x =</span> dimension, <span class="at">y =</span> Band.width)) <span class="sc">+</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>basis, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>basis, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-width-3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1695,7 +1696,7 @@ Figure&nbsp;8: Illustrative example. The confidence level of the confidence band
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(growth)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(growth)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>time <span class="ot">=</span> (growth<span class="sc">$</span>age <span class="sc">-</span> <span class="fu">min</span>(growth<span class="sc">$</span>age))<span class="sc">/</span>(<span class="fu">max</span>(growth<span class="sc">$</span>age) <span class="sc">-</span> <span class="fu">min</span>(growth<span class="sc">$</span>age))</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>y <span class="ot">=</span> growth<span class="sc">$</span>hgtm</span>
@@ -1743,7 +1744,7 @@ Figure&nbsp;8: Illustrative example. The confidence level of the confidence band
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df.max, <span class="fu">aes</span>(<span class="at">x=</span>Time, <span class="at">y =</span> band.low, <span class="at">group=</span>basis), <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
 <span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> basis)</span>
 <span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-realdata" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1761,9 +1762,9 @@ Figure&nbsp;9: Real data analysis example. We display the confidence bands for F
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>res_growth <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>res_growth <span class="sc">%&gt;%</span> </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Basis"</span> <span class="ot">=</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Basis"</span> <span class="ot">=</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-realdata" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1902,7 +1903,7 @@ P\left( \exists t |a(t)|+|b(t)|\geq \hat d_1^L(t) + \hat d_2^{L,L_{\max}}(t)\rig
 <div class="cell">
 <details class="code-fold">
 <summary>Hide/Show the code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">=</span> <span class="fu">brewer.pal</span>(<span class="dv">9</span>, <span class="st">"BuPu"</span>)</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(cols)</span>
@@ -1930,7 +1931,7 @@ P\left( \exists t |a(t)|+|b(t)|\geq \hat d_1^L(t) + \hat d_2^{L,L_{\max}}(t)\rig
 <span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image.plot</span>(<span class="fu">abs</span>(alpha.tot), <span class="at">main =</span> <span class="fu">paste0</span>(basis, <span class="st">"'s basis"</span>), <span class="at">col =</span> <span class="fu">pal</span>(<span class="dv">20</span>), <span class="at">yaxt=</span><span class="st">"n"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">"index of the basis"</span> )</span>
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length =</span> <span class="fu">ncol</span>(alpha.tot)), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"L=7, n=20"</span>, <span class="st">"L=7, n=100"</span>, <span class="st">"L=15, n=20"</span>, <span class="st">"L=15, n=100"</span>), <span class="at">las =</span> <span class="dv">2</span>, <span class="at">cex.axis =</span> <span class="fl">0.6</span>)</span>
 <span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">7</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>))</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-coefficients" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1955,7 +1956,7 @@ Figure&nbsp;10: Illustrative example. The true dimension is 11, we generate the 
   title = {Should We Correct the Bias in {Confidence} {Bands} for
     {Repeated} {Functional} {Data?}},
   journal = {Computo},
-  date = {2025-09-07},
+  date = {2025-09-14},
   url = {https://computo.sfds.asso.fr/template-computo-quarto},
   doi = {xxxx},
   issn = {2824-7795},
@@ -2034,13 +2035,14 @@ Bias in Confidence Bands for Repeated Functional Data?”</span>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2438,7 +2440,7 @@ Bias in Confidence Bands for Repeated Functional Data?”</span>
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb19" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Should we correct the bias in Confidence Bands for Repeated Functional Data?"</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Emilie Devijver</span></span>
@@ -4134,7 +4136,7 @@ Bias in Confidence Bands for Repeated Functional Data?”</span>
 <span id="cb19-1704"><a href="#cb19-1704" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-1705"><a href="#cb19-1705" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-1706"><a href="#cb19-1706" aria-hidden="true" tabindex="-1"></a> </span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
     <script type="text/javascript">
