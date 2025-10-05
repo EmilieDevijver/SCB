@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Emilie Devijver">
 <meta name="author" content="Adeline Samson">
-<meta name="dcterms.date" content="2025-09-28">
+<meta name="dcterms.date" content="2025-10-05">
 <meta name="keywords" content="functional data, repeated data, confidence band, Kac-Rice formulae, bias, dimension selection">
 
 <title>Should we correct the bias in Confidence Bands for Repeated Functional Data?</title>
@@ -90,7 +90,7 @@ div.csl-indent {
 <script src="ConfBand_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="ConfBand_files/libs/quarto-html/anchor.min.js"></script>
 <link href="ConfBand_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="ConfBand_files/libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="ConfBand_files/libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="ConfBand_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="ConfBand_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="ConfBand_files/libs/bootstrap/bootstrap-5808ca69435be88d06ef921c67ef30b5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -114,6 +114,22 @@ background: #034E79;
       }
 </style>
 <meta name="quarto:status" content="draft">
+    <style type="text/css">
+    .ps-root .ps-algorithm {
+      border-top: 2px solid;
+      border-bottom: 2px solid;
+    }
+    .pseudocode-container {
+      text-align: left;
+    }
+    </style>
+  
+      <style type="text/css">
+      .ps-algorithm > .ps-line {
+        text-align: left;
+      }
+      </style>
+    
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -204,14 +220,14 @@ ISSN 2824-7795</p>
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 28, 2025</p>
+        <p class="date">October 5, 2025</p>
       </div>
     </div>
                                     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">September 28, 2025</p>
+        <p class="date-modified">October 5, 2025</p>
       </div>
     </div>
       
@@ -1956,7 +1972,7 @@ Figure&nbsp;10: Illustrative example. The true dimension is 11, we generate the 
   title = {Should We Correct the Bias in {Confidence} {Bands} for
     {Repeated} {Functional} {Data?}},
   journal = {Computo},
-  date = {2025-09-28},
+  date = {2025-10-05},
   url = {https://computo.sfds.asso.fr/template-computo-quarto},
   doi = {xxxx},
   issn = {2824-7795},
@@ -1981,7 +1997,7 @@ Figure&nbsp;10: Illustrative example. The true dimension is 11, we generate the 
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-devijver2025" class="csl-entry quarto-appendix-citeas" role="listitem">
 Devijver, Emilie, and Adeline Samson. 2025. <span>“Should We Correct the
 Bias in Confidence Bands for Repeated Functional Data?”</span>
-<em>Computo</em>, September. <a href="https://doi.org/xxxx">https://doi.org/xxxx</a>.
+<em>Computo</em>, October. <a href="https://doi.org/xxxx">https://doi.org/xxxx</a>.
 </div></div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -4143,12 +4159,12 @@ Bias in Confidence Bands for Repeated Functional Data?”</span>
     (function(d) {
       d.querySelectorAll(".pseudocode-container").forEach(function(el) {
         let pseudocodeOptions = {
-          indentSize: el.dataset.indentSize || "1.2em",
-          commentDelimiter: el.dataset.commentDelimiter || "//",
-          lineNumber: el.dataset.lineNumber === "true" ? true : false,
-          lineNumberPunc: el.dataset.lineNumberPunc || ":",
-          noEnd: el.dataset.noEnd === "true" ? true : false,
-          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+          indentSize: el.dataset.indentSize,
+          commentDelimiter: el.dataset.commentDelimiter,
+          lineNumber: el.dataset.lineNumber.toLowerCase() === "true",
+          lineNumberPunc: el.dataset.lineNumberPunc,
+          noEnd: el.dataset.noEnd.toLowerCase() === "true",
+          titlePrefix: el.dataset.captionPrefix
         };
         pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
       });
