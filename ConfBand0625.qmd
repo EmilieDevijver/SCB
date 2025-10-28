@@ -43,18 +43,17 @@ It is important to accompany the function estimate with a measure of  uncertaint
 
 
 We consider several independent observations of the same function, i.e., noisy functional data. 
-To analyze this  noisy data, a classic approach consists in either averaging pointwise the data, applying a kernel function to smooth the noise or projecting the data onto a functional space defined by a family of functions (@kokoszka2017introduction Chapter 3, @LI2022104806). The pointwise empirical mean is not a function but a vector of estimated discrete points. On the other hand, with the two other approaches, the targeted function is then an approximation of the true function and obtained confidence bands are thus bands of this approximated function. 
+To analyze this  noisy data, a classic approach consists in applying a kernel function to smooth the noise or projecting the data onto a functional space defined by a family of functions (@LI2022104806, @kokoszka2017introduction Chapter 3). 
+In both approaches, the targeted function is then an approximation of the true function and obtained confidence bands are thus bands of this approximated function. 
 In such context, several methods have been proposed to construct a confidence band that controls the simultaneous functional type-I error rate.  In the case of a single individual (no repetition) but with many time points, some methods study the asymptotic distribution of the infinity norm between the targeted approximated function and its estimator, the asymptotics being in the number of time points (@Hall1991, @Claeskens2003). These approaches only work for large datasets in time and are likely to be too conservative otherwise.
-For small samples, bootstrap methods have been developed to compute the confidence band (@Neumann1998, @Claeskens2003), but with a high computational cost. Another approach consists in constructing confidence bands based on the volume-of-tube formula. @sun1994 studied the tail probabilities of suprema of Gaussian random processes. This approach is based on an unbiased linear estimator of the regression function, which corresponds to a band of the approximated targeted function. @Zhou1998 used the volume-of-tube formula for estimation by regression splines. @Krivobokova2010 applied this method for the construction of confidence bands using penalized spline estimators. @bunea2011 propose a threshold-type estimator and derive error bounds and simultaneous confidence bands. 
+For small samples, bootstrap methods have been developed to compute the confidence band (@Neumann1998, @Claeskens2003), but with a high computational cost. Another approach consists in constructing confidence bands based on the volume-of-tube formula. @sun1994 studied the tail probabilities of suprema of Gaussian random processes. This approach is based on an unbiased linear estimator of the regression function, which corresponds to a band of the approximated targeted function. @Zhou1998 used the volume-of-tube formula for estimation by regression splines. @Krivobokova2010 applied this method for the construction of confidence bands using penalized spline estimators.
 In the case of several observations of the same function, @Liebl2019 proposed a method based on random field theory and the volume-of-tube formula, leveraging the Kac-Rice formula. Their approach introduces a quantile that varies with location, which allows to achieve their fairness property. Their confidence band  uses an unbiased estimator. Unlike other methods, it does not require estimating the full covariance function of the estimator, but only its diagonal, which reduces computational time.
-From a practical viewpoint, @CB_survivalAnalysis2022 introduced a package to popularize simultaneous confidence bands in the context of survival analysis. @TELSCHOW202270 propose a simultaneous confidence band based on the Gaussian kinematic formula. Again, it assumes access to an asymptotically unbiased estimator of the function of interest.
+From a practical viewpoint, @CB_survivalAnalysis2022 introduced a package to popularize simultaneous confidence bands in the context of survival analysis. @bunea2011 propose a threshold-type estimator and derive error bounds and simultaneous confidence bands. @TELSCHOW202270 propose a simultaneous confidence band based on the Gaussian kinematic formula. Again, it assumes access to an asymptotically unbiased estimator of the function of interest.
 The coverage is thus guaranteed in the asymptotic setting after removing the bias and by targeting the approximated smoothed function. Their paper considers the non-gaussian and non-stationary cases.
 @wang2022 proposed a simultaneous Kolmogorov-Smirnov confidence band by modeling the error distribution, thus avoiding the estimation of the covariance structure of the underlying stochastic process. They rely on B-splines for the estimation of the mean curve.
-Note that recent extensions have been proposed in @Telschow2023 to construct simultaneous confidence bands, or based on conformal prediction in @conformalPrediction2022, or having a prediction goal in mind in @Jacques2023 by considering functional time series data. These different papers use approximation of the function of interest and do not deal with the non asymptotic associated bias. 
+Note that recent extensions have been proposed in @Telschow2023 to construct simultaneous confidence bands, or based on conformal prediction in @conformalPrediction2022, or having a prediction goal in mind in @Jacques2023 by considering functional time series data.
 
-We want to work in the non asymptotic setting and to propose confidence band of the original true function, not only on the approximated one (obtained by smoothing kernel or by projection). We do not work with the empirical mean estimator for two main reasons.  It does not inherit functional properties, especially its regularity. Furthermore, the dimension of the empirical mean estimator is larger than the dimension of a projection or kernel estimator and this induces a larger variance and wider confidence band. Thus we focus on functional estimator. 
-
-The difference between the original function and its approximation is a functional (deterministic) bias that depends on the quality of the kernel or the projection. This bias may be neglected in the asymptotic setting where the number of observations goes to infinity, but not   with finite sample sizes. It has to be taken into account in the construction of the confidence band. Both methods (kernel and projection) rely on the choice of an hyperparameter, the kernel bandwidth in the first case and the dimension of the functional projection basis in the second. The choice of this hyperparameter is crucial to control the type-I-error rate of the confidence band viewed as a band of the true function in a non-asymptotic setting. This is the question we explore in this paper.
+We want to work in the non asymptotic setting and to propose confidence band of the original true function, not only on the approximated one (obtained by smoothing kernel or by projection). The difference between the original function and its approximation is a functional (deterministic) bias that depends on the quality of the kernel or the projection. This bias may be neglected in the asymptotic setting where the number of observations goes to infinity, but not   with finite sample sizes. It has to be taken into account in the construction of the confidence band. Both methods (kernel and projection) rely on the choice of an hyperparameter, the kernel bandwidth in the first case and the dimension of the functional projection basis in the second. The choice of this hyperparameter is crucial to control the type-I-error rate of the confidence band viewed as a band of the true function in a non-asymptotic setting. This is the question we explore in this paper.
 
 
 @sun1994 proposed a bias correction for a particular class of functions but left the smoothing parameter choice open, leading to an unusable estimator. 
@@ -128,8 +127,6 @@ Practically, we assume this sum to be finite, as done for example in @Chen2015: 
 We also assume that the coefficients are Gaussian: for all $i=1,\ldots, N$ and $\ell=1, \ldots, L^\varepsilon$,
 $$c_{i \ell} \sim_{iid} \mathcal{N}(0,\sigma^2).$$ 
 
-
-Note that we could also work with elliptic distributions instead of the Gaussian distribution. The results of the paper would be the same but require more technical details. For simplicity, we focus on the Gaussian case.  
 
 Assumption 1 and Assumption 3 imply that each curve $y_i$ belongs to a finite family: for $j=1,\ldots,n$,
 $$ y_{ij} = \sum_{\ell=1}^{L^*} \mu_{\ell}^{L^*} B_\ell^{L^*}(t_{j}) + \sum_{\ell=1}^{L^\varepsilon} c_{i\ell} \phi_\ell(t_{j}). $$
@@ -242,8 +239,8 @@ The two terms defined in @eq-decomposition are more detailed in the two next sub
 
 ### Statistics 
 The statistics of the model, $t\mapsto Stat_{L}(t) = \underline{\hat{f}}^{L}(t) - \underline{f}^{L}(t)$, is a random functional quantity which depends on the estimator $\underline{\hat{f}}^{L}$. From @prp-error, for any $t\in [0,1]$, we define the centered and rescaled statistics $Z_L(t)$:
-$$Z_L(t):= \frac{Stat_{L}(t)}{\sqrt{\text{Var}(Stat_{L}(t))}} 
-= \frac{\underline{\hat{f}}^{L}(t) - \underline{f}^{L}(t)}{\sqrt{C^{L}(t,t)}}\sim \mathcal{N}(0,1). $$
+$$ Z_L(t):= \frac{Stat_{L}(t)}{\sqrt{\text{Var}(Stat_{L}(t))}} = \frac{\underline{\hat{f}}^{L}(t) - \underline{f}^{L}(t)}{\sqrt{C^{L}(t,t)}}\sim \mathcal{N}(0,1).$$
+
 
 
 The covariance function can be naturally estimated using the observations $y_{i.}$ as 
@@ -253,6 +250,7 @@ $$\hat C^{L}(s,t) = \frac1{N-1}\sum_{i=1}^{N} (B^L(s)\mathbf{P}^L y_{i.} - \unde
 ### Bias 
 The bias is due to the fact that the estimation is potentially performed in a different (finite) space than the space where the true function $\underline{f}^{L^*,L^*}$ lives. This is a functional bias, which is not random. It corresponds to the approximation of $f^{L^*}$ from $\mathcal{S}^{L^*}$ to the space $\mathcal{S}^{L}$. It can be written as follows:
 $$Bias_{L}(t) = B^L(t) \underline{\mu} ^{L} - B^{L^*}(t) \mu^{L^*}.$$
+
 It depends on $L$ and on the sample size through $\underline{\mu} ^{L}$. Let us describe its behavior. When $L<L^*$ and  the family is orthonormal, the approximation is the orthogonal projection and we have that 
 $$Bias_{L}(t)= \sum_{\ell=1}^L B_\ell^L(t)\underline{\mu}_\ell^{L} - \sum_{\ell=1}^{L^*} B_\ell^{L^*}(t)\underline{\mu}_\ell^{L^*} = \sum_{\ell = L+1}^{L^*} B_\ell^{L^*}(t)\underline{\mu}_\ell^{L^*}.$$
 
@@ -266,7 +264,6 @@ Under Assumption 1 and Assumption 3, the bias is, for all $t\in [0,1]$,
 
 :::
 
-Note that the bias is not $0$ even when $n\rightarrow \infty$, as soon as $L<L^*$. Thus, a correct selection of the dimension $L$ is an issue. 
 
 \bigskip
 In the next section, we explain how we use this property to derive confidence bands of $\underline{f}^{L}$ and $f^{L}$. 
@@ -282,9 +279,12 @@ The objective is to construct a confidence band for the two functions $\underlin
 <!-- Let $L\in \{L_{\min}, \ldots, L_{\max}\}$. !-->
 Consider $1-\alpha$ <!--as!--> a fixed confidence level. The aim is to find a function $d^L$ such that
 $$\mathbb{P}\left( \forall t \in [0,1],\; \underline{\hat{f}_{}}^{L}(t) -d^L(t)\leq \underline{f}^{L}(t)\leq \underline{\hat{f}_{}}^{L}(t) +d^L(t)\right) = 1-\alpha.$$
+
 Consider the normalized statistics $Z_L(t)$ which is a centered and reduced Gaussian process. We want to find the quantile $q^L$ satisfying
 
-$$q^L =\arg\min_{q} \left\{ \mathbb{P}\left(\max_{t \in [0,1]} \left|Z_L(t)\right| \leq q \right) = 1 - \alpha\right\}.$${#eq-qL}
+$$
+q^L = \arg\min_{q} \left\{ \mathbb{P}\left(\max_{t \in [0,1]} \left|Z_L(t)\right| \leq q \right) = 1 - \alpha\right\}.
+$$ {#eq-qL}
 
 Then we can take $d^L(t) = q^L \sqrt{C^{L}(t,t)}$. The covariance function $C^{L}(t,t)$ can be replaced by its estimator $\hat{C}^{L}(t,t)$, making the distribution a Student's distribution with $N-1$ degrees of freedom. Thus, it only requires to be able to compute the critical value $q^L$.
 
@@ -306,6 +306,7 @@ and $\hat q^L$ defined as the solution of the following equation, seen as a func
 $$
 \alpha = \mathbb{P}\left(|t_{N-1}|>q^L\right) +\frac{\| \tau^L\|_1}{\pi}\left( 1+\frac{(q^L)^2}{N-1}\right)^{-(N-1)/2} ,
 $${#eq-cL}
+
 with $(\tau^L)^2(t)= \partial_{12} c(t,t) = Var(Z'_L(t))$ where 
 we denote $\partial_{12}c(t,t)$ the partial derivatives of a function $c(t,s)$ in the first and second coordinates and then evaluated at $t=s$. 
 :::
@@ -340,6 +341,7 @@ Note that in the asymptotic framework $n\rightarrow\infty$, the previous definit
 ::: {#thm-CB_Liebl_asymptotic}
 Set Assumption 1 and Assumption 3 and a probability $\alpha\in [0,1]$. Then, we have, 
 $$\lim_{n \rightarrow +\infty} \mathbb{P}\left(\forall t \in [0,1], |\underline{\hat{f}}^{L}(t)-f^{L}(t)| \leq \hat d^L(t)\right) \geq 1-\alpha,$$
+
 with $\hat d^L(t) = \hat q^L \sqrt{\hat C^{L}(t,t)/N}$ and $\hat q^L$ is defined as the solution of @eq-cL.
 :::
 The proof is given in Appendix. 
@@ -443,7 +445,7 @@ This global approach guarantees that each band of the collection is debiased and
 In the next section, instead of debiasing each band, we employ another strategy focusing on the construction of a selection criteria that will guarantee that the bias is negligible.
 
 # Method 2: Selection of the best confidence band with a criteria taking into account the bias {#sec-modsel}
-In this section, we propose a new method in the non asymptotic setting to provide a confidence band of $f^{L^*}$ without correction the bias but taking it into account in the selection procedure. 
+In this section, we propose a new method in the non asymptotic setting to provide a confidence band of $f^{L^*}$. 
 
 Our method  uses the collection of confidence bands defined in @sec-bandSun. Instead of correcting their bias,  the strategy is to propose a selection criterion that is a trade-off between this bias and the dimension of the basis. To do this, we propose a new heuristic criterion linked to the definition of the band itself, considering the estimation of the band as the estimation of a quantile of a certain empirical process. The criterion is inspired by model selection tools for choosing the best dimension $L$. In the following, we assume that $L_{\max}$ is large enough such that $\underline f^{L_{\max},L^*}=f^{L^*}$.
 
@@ -467,13 +469,12 @@ In this section, we illustrate the different statements provided along the paper
 ## Generating data process {#sec-dgp}
 
 
-To illustrate the model, we simulate a regression functional model with $n=40$ regular timepoints per individual and $N=25$ individuals. In @fig-BasisModel, the function $f$ (red curve) belongs to the Fourier (resp. Legendre and Spline) family with $L^*=7$ and the noisy indiivdual observations $y_{ij}$ (grey curves) have a functional noise in dimension $L^{\varepsilon}=15$, also in the Fourier (resp. Legendre and Spline) family on the left plot (resp. middle and right). 
+To illustrate the model, we simulate a regression functional model with $n=50$ points per individual and $N=25$ individuals. In @fig-BasisModel, the function $f$ (red curve) belongs to the Fourier (resp. Legendre and Spline) family with $L^*=11$ and the noisy observations $y_{ij}$ (grey curves) have a functional noise in dimension $L^{\varepsilon}=20$, also in the Fourier (resp. Legendre and Spline) family on the left plot (resp. middle and right). 
 
 
 ```{r message=FALSE, fig.height=3, fig.width=7}
 #| label: fig-BasisModel
-#| fig-cap: "Functional regression with different bases. We generate a regression functional model using three different basis families: Fourier (left), Legendre (middle), and Splines (right). The black curve represents the true mean function, while the gray curves show individual noisy observations."
-
+#| fig-cap: "Illustrative example. We generate a regression functional model in the Fourier (left), Legendre (middle) and Splines (right) families. The red curve corresponds to the true function, and the gray curves correspond to noisy observations."
 library(ggplot2)
 library(fda)
 library(orthopolynom)
@@ -544,7 +545,7 @@ data = dgp(n=n,N=N,sd=sd,L.star=L.star, L.eps = L.eps, alpha.mu = alpha.mu, basi
 dfLegendre = data.frame( Time = rep(data$time,N+1),
                          basis = rep(basis, (N+1)*length(data$time)),
                          f = c(data$y, data$f.true),
-                         type = rep(c(rep("Obs", N), "True mean"), each = n), ind = rep(1:(N+1), each = n))
+                         type = rep(c(rep("obs", N), "True"), each = n), ind = rep(1:(N+1), each = n))
 
 
 
@@ -553,30 +554,31 @@ data = dgp(n=n,N=N,sd=sd,L.star=L.star, L.eps = L.eps, alpha.mu = alpha.mu, basi
 dfFourier = data.frame( Time = rep(data$time,N+1),
                          basis = rep(basis, (N+1)*length(data$time)),
                          f = c(data$y, data$f.true),
-                         type = rep(c(rep("Obs", N), "True mean"), each = n), ind = rep(1:(N+1), each = n))
+                         type = rep(c(rep("obs", N), "True"), each = n), ind = rep(1:(N+1), each = n))
 
 basis = "Splines"
 data = dgp(n=n,N=N,sd=2*sd,L.star=L.star, L.eps = L.eps, alpha.mu = alpha.mu, basis = basis, f.true = NULL)
 dfSplines = data.frame( Time = rep(data$time,N+1),
                          basis = rep(basis, (N+1)*length(data$time)),
                          f = c(data$y, data$f.true),
-                         type = rep(c(rep("Obs", N), "True mean"), each = n), ind = rep(1:(N+1), each = n))
+                         type = rep(c(rep("obs", N), "True"), each = n), ind = rep(1:(N+1), each = n))
 
 df = rbind(dfLegendre, dfFourier, dfSplines)
 ggplot(data = df, aes(x = Time, y = f, color = type, group = ind)) + 
   geom_line(linewidth= 0.5)+
-  scale_colour_manual(values = c("Obs" = "lightgrey","True mean" = "black")) +
+  scale_colour_manual(values = c("obs" = "lightgrey","True" = "red")) +
+  scale_linetype_manual(values = c("obs" = "solid", "True" = "solid")) +
   facet_grid(~basis)
 
 ```
 
 
 ## Confidence band for a fixed level {#sec-simu-band}
-The general band for $f^L$ derived in @thm-sunLoader is illustrated on @fig-bandL. It displays on the top row several functional data generated under either the Fourier family (left), Legendre (middle) or Spline (right), on the middle row the confidence bands of $\underline f^{L}$ for different values of $L=3,5, 7, 11$ and $15$, and on the bottom row the bound $\hat d^L$. The true functions $\underline f^{L}$ are displayed in cyan and the confidence bands in purple. We also compare them to the band based on the empirical mean (purple). The bands are very precise for each $L$. The behavior of $\hat d^L$ increases with $L$. As $d^L$ can be seen as a variance, $\hat d^L(t)$ is larger on the boundary of the time domain, as there are less observations near 0 and 1. The band based on the empirical mean is wider for each model. Even if the empirical mean is a good estimator, its pointwise construction increases the dimension of the estimator, thus its variance and its confidence band. This is not the case when we use the projection functional estimator which estimated a reduced number of parameters. 
+The band derived in @thm-sunLoader is illustrated on @fig-bandL. It displays on the top row several functional data generated under either the Fourier family (left), Legendre (middle) or Spline (right), on the middle row the confidence bands of $\underline f^{L}$ for different values of $L=3,5$ and $11$, and on the bottom row the bound $\hat d^L$. The true functions $\underline f^{L}$ are displayed in cyan and the confidence bands in purple. The bands are very precise for each $L$. The behavior of $\hat d^L$ increases with $L$. As $d^L$ can be seen as a variance, $\hat d^L(t)$ is larger on the boundary of the time domain, as there are less observations near 0 and 1. 
 
 We also evaluate numerically the levels of the obtained confidence bands. For this, 1000 datasets are simulated, the confidence band is estimated for each of them. 
-The empirical confidence level is then evaluated as the proportion of confidence bands that contain the true function. @tbl-levelL presents the empirical confidence levels for different values of $L$ and several sample sizes $n \in \{40, 150\}$, and $N \in \{10, 25, 60\}$, and for the 3 basis. 
-When $N=25$ and $N=60$, the level is the expected one whatever the value of $L$. We will see in the next sections that this will not be the case for the debiased confidence band. When $N=10$, the level is too small, especially when $L$ is large. This might be due to the the large number of parameters to be estimated in the covariance matrix $C$, with a small number of observations $N$. 
+The empirical confidence level is then evaluated as the proportion of confidence bands that contain the true function. @tbl-levelL presents the empirical confidence levels for different values of $L$ and two sample sizes $n=50$ and $n=150$, with $N=10$, $N=25$ and $N=60$. 
+When $N=25$ and $N=60$, the level is the expected one whatever the value of $L$, especially when $L<L^*$ and $N=25$,  but also when $L>L^\varepsilon$. We will see in the next sections that this will not be the case for the debiased confidence band. When $N=10$, the level is too small, especially when $L$ is large. This might be due to the the large number of parameters to be estimated in the covariance matrix $C$, with a small number of observations $N$. 
 
 
 ```{r }
@@ -654,8 +656,7 @@ CB.empmean = function(data, alpha=0.05){
   return(list(f.hat.up = f.hat.up, f.hat.low = f.hat.low, d.L = d.L, c.L = c.L, width = max(abs(f.hat.up-f.hat.low))))
 }
 
-
-d.L.Lmax = function(data, basis, L, Lmax=30, alpha = 0.05){
+d.L.Lmax = function(data, basis, L, Lmax=15, alpha = 0.05){
   est.2.f = estimator(data, basis, L)
   data.2.proj = est.2.f$data.proj
   est.2.f.Lmax = estimator(data, basis, Lmax)
@@ -672,7 +673,7 @@ d.L.Lmax = function(data, basis, L, Lmax=30, alpha = 0.05){
 
 ```{r , fig.height = 7, fig.width=7}
 #| label: fig-bandL
-#| fig-cap: "Confidence bands for $f^L$. For the three basis families (Fourier, on the left, Legendre, on the middle, and Splines on the right) we display: (top row) the observed functional data; (middle row) the estimated confidence bands for increasing values of L (3, 5, 7, 11 and 15); and (bottom row) the associated bound dL."
+#| fig-cap: "Illustrative example. For the three families, resp. Fourier, Legendre and the splines, we display on the top row the observed functional data, on the middle row the confidence bands for different values of L (3, 5 and 11), and on the bottom row the bound dL."
 
 dfObs = data.frame(Time = double(),
                    basis = character(),
@@ -700,7 +701,7 @@ dfdL <- data.frame(Time = double(),
  dfdL.emp  <- data.frame(Time = double(),
                    basis = character(),
                    dL = double())
-vec.L = c(3,5,7, 11, 15)
+vec.L = c(3,5,11)
 for (basis in c("Legendre", "Fourier", "Splines")){
   N = 25
   
@@ -735,6 +736,11 @@ for (basis in c("Legendre", "Fourier", "Splines")){
                                   dL = c(conf.band$d.L),
                                   dimension = as.factor(rep(L,length(data$time)))))                             
   } 
+  df.emp = rbind(df.emp, data.frame(Time = data$time,
+                                    basis = rep(basis, length(data$time)),flow = c(conf.band.emp$f.hat.low), fup = c(conf.band.emp$f.hat.up))) 
+  dfdL.emp = rbind(dfdL.emp, data.frame(Time = data$time,
+                                  basis = rep(basis, length(data$time)),
+                                  dL = c(conf.band.emp$d.L)))
 }
 
 p1 <- ggplot() + 
@@ -745,12 +751,15 @@ p1 <- ggplot() +
 p2 <- ggplot() +
   geom_line(data = dfBand, aes(x = Time, y = flow, group = dimension, color = dimension), linewidth = 0.8) +
   geom_line(data = dfBand, aes(x = Time, y = fup, group = dimension, color = dimension), linewidth = 0.8) +   
-   geom_line(data = dfTrueProjected, aes(x = Time, y = f, group = dimension), colour = "black", linewidth = 0.2)+ 
+  geom_line(data = df.emp, aes(x = Time, y = fup, color = 'Cov. Emp.'), linewidth = 0.8) + 
+  geom_line(data = df.emp, aes(x = Time, y = flow, color = 'Cov. Emp.'), linewidth = 0.8) +
+  geom_line(data = dfTrueProjected, aes(x = Time, y = f, group = dimension), colour = "black", linewidth = 0.2)+ 
   facet_grid(~basis) + ylab("confidence band")
 
 
 p3 <- ggplot() +
   geom_line(data = dfdL, aes(x = Time, y = dL, group = dimension, color = dimension)) +
+  geom_line(data = dfdL.emp, aes(x = Time, y = dL, color = 'Cov. Emp.')) +
   facet_grid(~basis)
 
 ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
@@ -759,12 +768,12 @@ ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 
 ```{r}
 #| label: tbl-levelL
-#| tbl-cap: "Empirical coverage of CB for different basis families. The empirical confidence level of the confidence band CB is estimated over 1000 repetitions, for alpha = 0.05. Confidence bands are calculated with the Fourier (top), Legendre  (middle) and Splines  (bottom) basis families. Each row corresponds to a different number of basis functions L, and each column to a different pair of sample sizes (n,N)."
+#| tbl-cap: "The confidence level of the confidence band CB is evaluated from 1000 repetitions. Confidence bands are calculated with the Fourier family (top), Legendre family (middle) and Splines family (bottom), for several L in rows and several n and N in columns, for alpha = 0.05."
 
 library(knitr)
 library(kableExtra)
 run = FALSE
-vec.L = c(3,5,7, 11,15)
+vec.L = c(3,5,11,15)
 vec.n = c(40, 150) 
 vec.N = c(10, 25, 60)
 
@@ -829,16 +838,16 @@ perf.S %>%
 
 ```
 
-## Method 1: confidence bands by correcting the bias {#sec-simudebias}
-We illustrate the confidence band of $f^{L^*}$  given in @prp-CBf. 
+## Confidence bands by correcting the bias {#sec-simudebias}
+We illustrate the results given in @prp-CBf. 
 In @fig-Lstar, top row, we plot the confidence bands obtained for different dimensions $L \in \{3,5,11,15,21\}$ with Fourier, Legendre and Splines families and $\alpha=\beta=\sqrt{0.05}\approx 0.22$. We can see that all the confidence bands are alike. Especially, they are unbiased, even for $L=3$. A larger dimension $L$ provides a smoother band. 
 On the middle and bottom rows of @fig-Lstar, we illustrate the two terms that enter the confidence band, $t \mapsto \hat d_1^L(t)$ and $t\mapsto \hat d_2^{L,L_{\max}}(t)$. Their behavior is the same along time. The function $\hat d_1^L(t)$ can be seen as a variance, this is why it is larger near 0 and 1 where there are less observations. The function $\hat d_2^{L,L_{\max}}(t)$ is smaller than $\hat d_1^L(t)$ because it controls the remaining rest after the projection. Note that as expected when $L>L^\varepsilon$, $\hat d_2^{L,L_{\max}}(t)$ is close to 0. As explained before, the influence of $L$ is not the same for the two functions. When $L$ increases, $\hat d_1^L(t)$ increases while $\hat d_2^{L,L_{\max}}(t)$ decreases. 
 
 ```{r, fig.height = 7, fig.width=7}
 #| label: fig-Lstar
-#| fig-cap: "Visualization of confidence bands by correcting the bias. For a given dataset, we plot several confidence bands (top row), functions dL (middle row) and dLLmax (bottom row). Bands and functions are estimated with Fourier (left column), Legendre (middle column) and Spline (right column) basis and several dimensions L (3, 5, 7, 11, 15, 21), and Lmax = 25."
+#| fig-cap: "Illustrative example. For a given dataset, we plot several confidence bands (top row), functions dL (middle row) and dLLmax (bottom row). Bands and functions are estimated with Fourier (left column), Legendre (middle column) and Spline (right column) basis and several dimensions L (3, 5, 11, 15)."
 
-CB2 = function(data, basis, L, Lmax = 30, alpha = 0.05, beta = 0.05){
+CB2 = function(data, basis, L, Lmax = 13, alpha = 0.05, beta = 0.05){
   ### data: the observations, only the time-points and the individual functions
   ### basis: functional basis, to be chosen in 'Fourier', 'Splines'
   ### L: number of functional basis for the signal
@@ -900,7 +909,7 @@ dfdLLmax = data.frame(Time = double(),
                       basis = character(),
                       dimension = character()
 )
-vec.L = c(3,5,7,11,15,21)
+vec.L = c(3,5,11,15)
 for (basis in c("Legendre", "Fourier", "Splines")){
   if (basis == "Splines"){ data = dgp(sd=2*1, alpha.mu = NULL, basis = basis, f.true = NULL)
   } else { data = dgp(sd=1, alpha.mu = NULL, basis = basis, f.true = NULL)}
@@ -908,9 +917,9 @@ for (basis in c("Legendre", "Fourier", "Splines")){
                                     f = data$f.true,
                                     basis = rep(basis, length(data$time))))
   
-  crit.sel = matrix(NA, ncol = 3, nrow = 22)
+  crit.sel = matrix(NA, ncol = 3, nrow = 16)
   for (L in vec.L){
-    conf.band.L.star.2 = CB2(data, basis, L, Lmax = 25, alpha = 0.05)
+    conf.band.L.star.2 = CB2(data, basis, L, Lmax = 13, alpha = 0.05)
     crit.sel[L,] =c(max(conf.band.L.star.2$d.L), max(conf.band.L.star.2$d.L.Lmax),
                     sum(abs(conf.band.L.star.2$d.L+conf.band.L.star.2$d.L.Lmax)))
     dfBandup = rbind(dfBandup, data.frame(Time = data$time,
@@ -952,85 +961,71 @@ ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 
 ```
 
-In @tbl-levLstar, we simulate 1000 repeated datasets with the Legendre family and with two sample sizes $n=40$ and $n=150$ and $N=25$. For each dataset, we compute the confidence band defined in @prp-CBf with a theoretical confidence level of $1-\alpha\beta=0.95$ and for different values of $L$. Then the confidence level is approximated as the proportion of confidence bands containing the true function $f$. Remark that when $L<L^{\varepsilon}$, the level is the expected one, that is 0.95. When $L>L^{\varepsilon}$, the level is no more ensured, as explained before. Indeed the term $d^{L,L^{\max}}$ is mainly equal to 0 when $L^{\max}$ is large enough, and the level is close to $1-\alpha$ instead of $1-\alpha\beta$. This is not the case for the band in @sec-bandSun, as this is due to the correction of the bias. 
+In @tbl-levLstar, we simulate 1000 repeated datasets with the Legendre family and with two sample sizes $n=50$ and $n=150$ and $N=25$. For each dataset, we compute the confidence band defined in @prp-CBf with a theoretical confidence level of $1-\alpha\beta=0.95$ and for different values of $L$. Then the confidence level is approximated as the proportion of confidence bands containing the true function $f$. Remark that when $L<L^{\varepsilon}$, the level is the expected one, that is 0.95. When $L>L^{\varepsilon}$, the level is not more ensured, as explained before. Indeed the term $d^{L,L^{\max}}$ is mainly equal to 0, and the level is close to $1-\alpha$ instead of $1-\alpha\beta$. This is not the case for the band in @sec-bandSun, as this is due to the correction of the bias. 
 ```{r}
 #| label: tbl-levLstar
-#| tbl-cap: "Empirical coverage of CB2. The table reports the empirical level of confidence of the proposed confidence band CB2, computed for various values of L (rows) and  n  (columns), with fixed N=25, and various basis (top: Fourier, middle: Legendre, bttom: Splines). The nominal confidence level is set to 0.05, using parameters  alpha=beta=0.2, such that the combined coverage is 1-0.95."
+#| tbl-cap: "Illustrative example. We display the level of confidence for the proposed confidence band CB2, for several L in rows and several n in columns, N=25, for alpha=0.2 and beta=0.2 (and then in total the confidence band reaches the level 0.95), and considering the Legendre family."
 
 run = FALSE
-table_list = list()
 if (run == TRUE){
   nb.repeat = 1000
   n.test = 5000
-  vec.L = c(3,5,7,11,15)
+  vec.L = c(3,5,11,15)
   vec.n = c(40, 150) 
+  basis = "Legendre"
   time = seq(min(data$time), max(data$time), length.out = n.test)
+  perf = matrix(NA, nrow = max(vec.L), ncol = 2)
   
-  for (basis in c( "Fourier", "Legendre", "Splines")){
-    perf = matrix(NA, nrow = max(vec.L)+1, ncol = 2)
-    for (ind.n in 1:length(vec.n)){
-      for (L in vec.L){
-        cpt = 0
-        for (rep in 1:nb.repeat){
-          set.seed(rep)
-            if (basis == "Splines"){ data = dgp(sd=2*1, alpha.mu = NULL, basis = basis, f.true = NULL)
-            } else { data = dgp(sd=1, alpha.mu = NULL, basis = basis, f.true = NULL)}
-          conf.band.L.star.2 = CB2(data, basis, L, Lmax = 25, alpha = sqrt(0.05), beta=sqrt(0.05))
-          f.true = stats::spline(x = data$time, y = data$f.true, xout = time, method = "natural")$y
-          f.hat.up = stats::spline(x = data$time, y = conf.band.L.star.2$f.hat.up, xout = time, method = "natural")$y
-          f.hat.low = stats::spline(x = data$time, y = conf.band.L.star.2$f.hat.low, xout = time, method = "natural")$y
-          if (sum(f.true< f.hat.up)+sum(f.true> f.hat.low) == 2*n.test){
-            cpt = cpt+1} 
-          }
-        perf[L,ind.n] = cpt/nb.repeat
+  
+  for (ind.n in 1:length(vec.n)){
+    for (L in vec.L){
+      cpt = 0
+      for (rep in 1:nb.repeat){
+        set.seed(rep)
+        data = dgp(n=vec.n[ind.n], basis = "Legendre")
+        conf.band.L.star.2 = CB2(data, basis, L, Lmax = 13, alpha = 0.2, beta=0.2)
+        f.true = stats::spline(x = data$time, y = data$f.true, xout = time, method = "natural")$y
+        f.hat.up = stats::spline(x = data$time, y = conf.band.L.star.2$f.hat.up, xout = time, method = "natural")$y
+        f.hat.low = stats::spline(x = data$time, y = conf.band.L.star.2$f.hat.low, xout = time, method = "natural")$y
+        if (sum(f.true< f.hat.up)+sum(f.true> f.hat.low) == 2*n.test){
+          cpt = cpt+1} 
       }
+      perf[L,ind.n] = cpt/nb.repeat
     }
-    perf = perf[vec.L,]
-    rownames(perf) = vec.L
-    colnames(perf) = vec.n
-    save(perf, file = paste0("Res_Tab2_", basis, ".RData"))
-    kbl_obj = perf %>% kable("latex", booktabs = TRUE) %>% add_header_above(c("L" = 1, "n" = 2))
-    table_list[[basis]] <- kbl_obj
-    }
-} 
-load(paste0("Res_Tab2_Fourier.RData"))
-perf.F = perf 
-load(paste0("Res_Tab2_Legendre.RData"))
-perf.L = perf 
-load(paste0("Res_Tab2_Splines.RData"))
-perf.S = perf 
-  
+  }
+  perf = perf[vec.L,]
+  rownames(perf) = vec.L
+  colnames(perf) = vec.n
+  save(perf, file = "Res_Tab2.RData")
+} else {load('Res_Tab2.RData')}
 
-perf.F %>% kable("latex", booktabs = TRUE) %>% add_header_above(c("L" = 1, "n" = 2))
-
-perf.L %>% kable("latex", booktabs = TRUE) %>% add_header_above(c("L" = 1, "n" = 2))
-
-perf.S %>% kable("latex", booktabs = TRUE) %>% add_header_above(c("L" = 1, "n" = 2))
-
+perf %>%
+  kable("latex", booktabs = TRUE) %>%
+  add_header_above(c("L" = 1, "n" = 2))
 ```
 
 
 
-We illustrate the different terms involved in @eq-def-Lhat in @fig-dLLmax: we plot for a given dataset, the infinity norm of the width of the band $\hat d^L(t) + \hat d^{L,L_{\max}}(t)$ (top), of $\hat d^L(t)$ (middle) and $\hat d^{L,L_{\max}}(t)$ (bottom) functions obtained with the Fourier (left column), Legendre (middle column) and Spline (right column) basis. As already said, $\|\hat d^L\|_{\infty}$ increases with $L$ while $\|\hat d^{L,L_{\max}}\|_{\infty}$ decreases (and is zero when $L>L^{\varepsilon}$). The width of the band wrt $L$ does not have a $U$-shape, as expected. It is thus difficult to minimize this criterion and the selection of $\hat L$ is thus not stable. But again, whatever the value of $\hat L$, the corresponding band is debiased in the collection. We will see in the next sections that its width is smaller than standard approaches. 
+We illustrate the different terms involved in @eq-def-Lhat. In @fig-dLLmax, we plot for a given dataset, the infinity norm of the width of the band $\hat d^L(t) + \hat d^{L,L_{\max}}(t)$ (top), of $\hat d^L(t)$ (middle) and $\hat d^{L,L_{\max}}(t)$ (bottom) functions obtained with the Fourier (left column), Legendre (middle column) and Spline (right column) basis. As already said, $\|\hat d^L\|_{\infty}$ increases with $L$ while $\|\hat d^{L,L_{\max}}\|_{\infty}$ decreases (and is zero when $L>L^{\varepsilon}$). The width of the band wrt $L$ does not have a $U$-shape, as expected. It is thus difficult to minimize this criterion and the selection of $\hat L$ is thus not stable. But again, whatever the value of $\hat L$, the corresponding band is debiased in the collection. We will see in the next section that its width is smaller than standard approaches. 
 The performance of the selection is also illustrated in the next section. 
 
 ```{r, out.height = "50%", fig.width=7}
 #| label: fig-dLLmax
-#| fig-cap: "Norm of the confidence band width and associated bounds. For a given dataset, we compute: (top row) the norm of the width of the confidence band; (middle row) the norm of the function dL; and (bottom row) the norm of the function dLLmax, for various dimensions L. Results are shown for the Fourier (left column), Legendre (middle column), and Splines (right column) basis families."
- 
+#| fig-cap: "Illustrative example. For a given dataset, we calculate the norm of the width of the confidence band (top), of the dL function (middle) and the dLLmax function (bottom), for several dimensions L and for Fourier (left column), Legendre (middle column) and Splines (right column) basis." 
+#| 
+set.seed(1)
 df = data.frame(Norm = double(),
                 type = character(),
                 basis = character(),
                 dimension = integer()
 )
+L.max = 13
 for (basis in c("Legendre", "Fourier", "Splines")){
-  if (basis == "Splines"){data = dgp(basis = basis, sd = 2)
-  } else {data = dgp(basis = basis)}
+  vec.L = seq(3,13, by=1)
+  if (basis == 'Fourier'){ vec.L = seq(3,13, by=2)}
+  if (basis == "Splines"){   data = dgp(basis = basis, sd = 2)
+  } else data = dgp(basis = basis)
   
-  vec.L = seq(3,15, by=1)
-  if (basis == 'Fourier'){vec.L = seq(3,15, by=2)}
-  L.max = 20
-
   length.band = d.L = d.L.Lmax = NULL
   for (L in vec.L){
     conf.band.L.star.2 = CB2(data, basis, L, Lmax = L.max, alpha = sqrt(0.05), beta = sqrt(0.05))
@@ -1051,16 +1046,20 @@ ggplot(df, aes(x = dimension, y = Norm, fill = type)) +
 
 ```
 
-## Method 2: a model selection criterion to take into account the bias {#sec-simumethod2}
+## Model selection criterion {#sec-simumodsel}
 
-In @fig-critlast, we illustrate the behavior of the selection criterion introduced in @sec-modsel on simulated data, with $\lambda\in\{0, 0.5, 1, 2\}$ for the three basis. We can see that $\tilde L$ is overestimated. When considering nested spaces, it ensures that $\tilde L$ tends to be larger than $L^*$ and thus the confidence band is automatically unbiased.
+We want to evaluate the performance of the two selection criteria introduced in this paper.
+
+
+First, we consider the second approach presented in @sec-modsel. 
+In @fig-critlast, we illustrate the behavior of the selection criterion introduced in @sec-modsel on simulated data, with $\lambda=1$ for the three basis. We can see that $\tilde L$ is overestimated. When considering nested spaces, it ensures that $\tilde L$ tends to be larger than $L^*$ and thus the confidence band is automatically unbiased.
 
 
 ```{r, fig.height = 3, fig.width=7}
 #| label: fig-critlast
-#| fig-cap: "Behavior of selection criteria as a function of model dimension. For a given simulated dataset, we display the evolution of the selection criteria with respect to the dimension L, for several values of the regularization parameter lambda. Results are shown for the Fourier (left), Legendre (middle), and Splines (right) basis families."
+#| fig-cap: "Illustrative example. For a given simulated dataset, we show the behavior of the criteria as a function of dimension L, for several lambdas, for Fourier (left), Legendre (middle) and Splines (right) basis."
 #| 
-L.max = 20
+L.max = 13
 dfCriterion = data.frame(criterion = double(),
                          dimension = integer(),
                          basis = character())
@@ -1092,22 +1091,20 @@ ggplot(dfCriterion, aes(x = dimension, y = criterion, color = lambdas)) +
 
 ```
 
-## Comparison of the methods with the state-of-the-art {#sec-simumodsel}
-
-We evaluate the performance of the two selection criteria introduced in this paper,  and compare the two strategies $CB_2$ and $CB_3$ with some standard approaches. More precisely, 
-we  simulate 1000 repeated datasets. The different confidence bands and the norm of their widths are computed for several $L$. We apply the selection criteria and plot the distribution of the estimated dimension in @fig-modelsel, for the three basis families, for several model selection criteria: $\hat L$, $\tilde L$,  cross validation and  hard thresholding. The dimension $\hat L$ is almost always larger than the true $L^*=7$. The fact that it is larger is not a problem because the selected band is unbiased and has the correct level as soon as $L^\varepsilon$ is large. However, the criterion tends to select a band that is (too) smooth.
+We compare the two strategies $CB_2$ and $CB_3$ with some standard approaches. More precisely, 
+we  simulate 100 repeated datasets. The different confidence bands and the norm of their widths are computed for several $L$. We apply the selection criteria and plot the distribution of the estimated dimension in @fig-modelsel, for the three basis families, for several model selection criteria: $\hat L$, $\tilde L$,  cross validation and  hard thresholding. The dimension $\hat L$ is almost always larger than the true $L^*=11$. The fact that it is larger is not a problem because the selected band is unbiased and has the correct level as soon as $L^\varepsilon$ is large. However, the criterion tends to select a band that is (too) smooth.
 We can see that the selected dimension $\tilde{L}$ is smaller in distribution, and closer to the true value than $\hat{L}$. In addition, as we then use the confidence band of @sec-bandSun, the confidence level is guaranteed to be as expected.
 The model selected by  cross validation is rather good, for all the  basis considered. On the other hand, the model selected by  hard thresholding is not good,  particularly for a non orthonormal basis.
 
 ```{r, fig.height = 7, fig.width=7}
 #| label: tbl-levLstar2
-#| tbl-cap: "Comparison with the state-of-the-art for the empirical confidence level. The table reports the performance of the proposed confidence band CB3, estimated over 1000 repetitions, for various model selection criteria and competitive methods (rows) and for various basis families (columns). Results are shown for alpha=0.05, with n=50 and N=25."
+#| tbl-cap: "Illustrative example. We display the level of confidence over 100 repetitions for the proposed confidence band CB3, for several model selection criterion in rows and several basis in columns, for alpha=0.05 and n=50, N=25."
 
 library(ffscb)
 
 run = TRUE
 if (run == TRUE){
-  repet = 1000
+  repet = 100
   length.CBL.CV = length.CBL.L0 = length.CBL.ffscb = length.emp.mean = c(NA)
   dfLengthSelect.CV = data.frame(length = double(), basis = character())
   dfLhatSelect.CV = dfLhatSelect.L0 = data.frame(Lhat = double(), L = integer(), basis = character())
@@ -1118,16 +1115,16 @@ if (run == TRUE){
   dfLhat = data.frame(Lhat = double(), L = integer(), basis = character())
   ind.basis = 0
   cpt = matrix(0, nrow = 8, ncol = 3)
-  for (basis in c("Fourier", "Legendre", "Splines")){
+  for (basis in c("Legendre", "Fourier", "Splines")){
     ind.basis = ind.basis + 1
-    vec.L = seq(3,13, by=1)
+    vec.L = seq(3,12, by=1)
     mod.sel = mod.sel.L0 = mod.sel.CV = coeff.L0 = err = conf.band.ffscb = conf.band.emp.mean = c()
-    if (basis == 'Fourier'){ vec.L = seq(3,13, by=2)}
+    if (basis == 'Fourier'){ vec.L = seq(3,12, by=2)}
     mod.sel = matrix(NA, nrow = repet, ncol = 5)
     L.mod.sel = c.L = c()
-    Lmax = 25
+    Lmax = 13
     ind = c()
-    for (rep in 1:repet){
+    for (rep in 1:repet){print(rep)
       set.seed(rep)
       if (basis == "Splines"){data = dgp(basis = basis, sd = 2)
       } else  {data = dgp(basis = basis)}
@@ -1194,7 +1191,7 @@ if (run == TRUE){
       n.test = 5000
       time = seq(min(data$time), max(data$time), length.out = n.test)
       f.true = stats::spline(x = data$time, y = data$f.true, xout = time, method = "natural")$y
-      models = list(conf.band.L.star, conf.band.L.max,  CB2.Lhat, CB3, conf.band.L0, conf.band.CV, conf.band.emp.mean, conf.band.ffscb)
+      models = list(CB2.Lhat, conf.band.L.max, conf.band.L.star, CB3, conf.band.CV, conf.band.L0, conf.band.ffscb, conf.band.emp.mean)
       for (mod in 1:8){
         f.hat.up = stats::spline(x = data$time, y = models[[mod]]$f.hat.up, xout = time, method = "natural")$y
         f.hat.low = stats::spline(x = data$time, y = models[[mod]]$f.hat.low, xout = time, method = "natural")$y
@@ -1202,10 +1199,9 @@ if (run == TRUE){
         }
       }
     }
-
-     dfBandWidth = rbind(dfBandWidth, data.frame(Band.width = c(mod.sel[ ,4], mod.sel[ ,3], mod.sel[ ,1],  mod.sel[ ,5], length.CBL.L0, length.CBL.CV,
-                                                             length.emp.mean,length.CBL.ffscb),
-                                                  basis = rep(basis, repet*8), dimension = rep(c("Lstar","Lmax", "Lhat", "Ltilde", "L.L0", "L.CV", "Mean", "FFSCB"), each = repet*3))) 
+     dfBandWidth = rbind(dfBandWidth, data.frame(Band.width = c(mod.sel[ ,1], mod.sel[ ,3], mod.sel[ ,4], mod.sel[ ,5], length.CBL.CV, length.CBL.L0, 
+                                                                length.CBL.ffscb, length.emp.mean),
+                                                  basis = rep(basis, repet*8), dimension = rep(c("Lhat", "Lmax", "Lstar","Ltilde", "L.CV", "L.L0", "FFSCB", "emp mean"), each = repet*3))) 
                                            
     dfLhat = rbind(dfLhat, data.frame(
       L = vec.L,
@@ -1223,19 +1219,18 @@ if (run == TRUE){
 } else {
   load('Res_Tab4.RData')}
 
-row.names(cpt) = c("Lstar", "Lmax", "Lhat","Ltilde", "L.L0", "L.CV", "Mean", "FFSCB")
+row.names(cpt) = c("Lhat", "Lmax", "Lstar","Ltilde", "L.CV", "L.L0", "FFSCB", "emp mean")
 
 
 cpt %>%
   kable("latex", booktabs = TRUE) %>%
-  add_header_above(c("model" = 1, "Fourier" = 1, "Legendre" = 1, "Splines" = 1))
+  add_header_above(c("model" = 1, "Legendre" = 1, "Fourier" = 1, "Splines" = 1))
 ```
 
 
-```{r, fig.height = 5, fig.width=7}
+```{r, fig.height = 7, fig.width=7}
 # | label: fig-modelsel
-# | fig-cap: "Distribution of the selected model dimension across selection methods. Based on 1000 simulated datasets, we report the distribution of the estimated dimension L for four model selection methods: from top to bottom — the debiased confidence band CB2 with Lhat, the band CB3 with Ltilde , cross-validation, and hard-thresholding. The true model dimension is Lstar = 7."
-library(patchwork)
+# | fig-cap: "Illustrative example with $N=25$. From 100 datasets, we calculate the distribution of the estimated dimension L, for four model selection criteria: from top to bottom, the debiased band proposed in CB2 with  Lhat, the band CB3 with  Ltilde, the cross validation and hard thresholding methods.  The true dimension is $L^* = 11$. "
 
 load('Res_Tab3_Lhat.RData')
 
@@ -1254,28 +1249,25 @@ p4 <- ggplot(data = dfLhat, aes(x = L, y = Lhat.L0)) +
   geom_bar(stat ="identity")+
   facet_grid(~basis)
 
-(p1 | p2) / (p3 | p4)
+library(gridExtra)
 
-
+grid.arrange(p1, p2, p3, p4, nrow = 4)
 ```
 
 The reformulation of the band around $\underline{\hat f}_2^{ L_{\max}, L^*}$ is close to the band presented in @sec-bandSun for $L=L_{\max}$, that is a band centered around $\underline{\hat f}^{ L_{\max}, L^*}$. A natural question is to understand what is the gain by doing so instead of using the band from @sec-bandSun with $L=L_{\max}$, namely the band $\left [\underline{\hat f}^{ L_{\max}, L^*}(t)-\hat d^{L_{\max}}(t); \underline{\hat f}^{ L_{\max}, L^*}(t)+\hat d^{L_{\max}}(t)\right]$. To do that, we have to understand the behavior of the different terms. As it is difficult to compare theoretically the width of the two bands, we compare them using simulations. 
-For 1000 repeated datasets, we compute several  confidence bands:  the  $CB_1$ band constructed in @sec-bandSun with $L_{\max}$, the  $CB_{2}$ band defined in @prp-CBf with $\hat L$,  the  $CB_{3}$ band defined in @sec-modsel with $\tilde L$ and the ideal (and not accessible) band constructed in @sec-bandSun with the true $L^*$. In @fig-width-2, we present  boxplots of the norms of the band width with $\hat L$,  $L_{\max}$, $L^*$  and $\tilde{L}$. 
+For 100 repeated datasets, we compute several  confidence bands:  the  $CB_1$ band constructed in @sec-bandSun with $L_{\max}$, the  $CB_{2}$ band defined in @prp-CBf with $\hat L$,  the  $CB_{3}$ band defined in @sec-modsel with $\tilde L$ and the ideal (and not accessible) band constructed in @sec-bandSun with the true $L^*$. In @fig-width-2, we present  boxplots of the norms of the band width with $\hat L$,  $L_{\max}$, $L^*$  and $\tilde{L}$. 
 The width of the confidence band with the true $L^*$ is smaller, which is expected but unfortunately not achievable.  The width of the confidence band $CB_1$  is smaller than that of the band $CB_2$. This can be explained by the fact that we estimate two different quantities, on smaller datasets, for more conservative levels ($1-\alpha$ and $1-\beta$ respectively) in order to finally achieve the confidence level of $1-\alpha\beta$. This also explains why the cross validation and hard-thresholding methods, which also divide the sample into two parts, do not give good results either.  The model given by the heuristic model selection criterion $\tilde crit$ achieves good performance. 
 Note that the width of the selected model $\tilde L$ is better than the width of the confidence band with a large level $L_{\max}$, which one should have used to avoid model selection. 
 
 ```{r, out.height = "25%", fig.width=10}
 #| label: fig-width-2
-#| fig-cap: "Width of the confidence bands accross  selection methods. Boxplots show the distribution of the confidence band width over 1000 repetitions, for the dimension selected by the various criteria introduced in this paper (as well as standard baselines). Results are shown for the Fourier (left), Legendre (middle), and Splines (right) basis families."
+#| fig-cap: "Illustrative example. We display within boxplots the confidence band's width over 100 repetitions for the dimension selected by the several criterion introduced in this paper, for Fourier (left), Legendre (middle) and Splines (right) basis."
 
 load('Res_Tab3_BandWidth.RData')
 
-dfBandWidth$dimension <- factor(dfBandWidth$dimension, levels = unique(dfBandWidth$dimension))
-
 ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) + 
   geom_boxplot() + 
-  facet_wrap(~basis, scales = "free_y")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  facet_wrap(~basis, scales = "free_y")
 ```
 
 
@@ -1287,12 +1279,12 @@ We now illustrate the behaviour of the bands when the basis used for estimation 
 
 ```{r}
 #| label: tbl-levelL-2
-#| tbl-cap: "Empirical coverage of confidence bands under model misspecification. The empirical confidence level is estimated over 1000 repetitions. Data are generated using a Splines basis, while confidence bands are computed using the Fourier (top) and Legendre (bottom) basis families. Each row corresponds to a different value of L, and each column to a different pair of sample sizes (n,N)."
+#| tbl-cap: "Illustrative example. The confidence level of the confidence band is evaluated from 1000 repetitions. Data is generated using a Splines basis, and confidence bands are calculated with the Fourier (top) and Legendre (bottom) families, for several L in rows and several n and N in columns."
 
 library(knitr)
 library(kableExtra)
-run = FALSE
-vec.L = c(5,7, 11,15)
+run = TRUE
+vec.L = c(5,11,15)
 if (run == TRUE){
   nb.repeat = 1000
   n.test = 5000
@@ -1317,8 +1309,8 @@ if (run == TRUE){
             if (basis == 'Fourier'){
               if (L%%2 == 0){ L = L+1}
             }
-            B.old = func.basis(data$time, L = 7, basis)
-            B = func.basis(time, L = 7, basis)
+            B.old = func.basis(data$time, L = 11, basis)
+            B = func.basis(time, L = 11, basis)
             
             f.true = t(B %*% solve(t(B.old) %*% B.old) %*% t(B.old) %*% data$f.true)
             f.hat.up = stats::spline(x = data$time, y = conf.band$f.hat.up, xout = time, method = "natural")$y
@@ -1359,21 +1351,21 @@ Moreover, the widths of the confidence bands selected with $\tilde L$ and by cro
 
 ```{r}
 #| label: tbl-levelL-3
-#| tbl-cap: "Empirical coverage of confidence bands across selection methods under model misspecification. The empirical confidence level is estimated over 1000 repetitions. Data are generated using a Splines basis, while confidence bands are computed using the Fourier (top) and Legendre (bottom) basis families. The rows correspond to different model selection criteria and dimensions L, and the columns to various combinations of sample sizes (n,N)."
+#| tbl-cap: "Illustrative example. The confidence level of the confidence band is evaluated from 100 repetitions. Data is generated using a Splines basis, and confidence bands are calculated with the Fourier (top) and Legendre (bottom) families, for several model selection criterion in rows, L in rows and several n and N in columns."
 
 library(knitr)
 library(kableExtra)
-run = FALSE
-vec.L = c(5,7, 11,15)
+run = TRUE
+vec.L = c(5,11,15)
 vec.n = c(40, 150) 
 if (run == TRUE){
-  nb.repeat = 1000
+  nb.repeat = 100
   n.test = 5000
   vec.N = c(25)
   basis = "Splines"
   basis.2 = c('Fourier', 'Legendre')
   time = seq(min(data$time), max(data$time), length.out = n.test)
-  perf.sel = array(0, dim = c(2,2,1,2))
+  perf.sel = array(0, dim = c(2,1,1,2))
   err = coeff.L0 = c()
   L.mod.sel = mod.sel.CV = length.CBL.CV = c()
   mod.sel = matrix(NA, nrow = nb.repeat, ncol = 2)
@@ -1406,7 +1398,7 @@ if (run == TRUE){
             }))
           })
           for (L in vec.L){
-            CB2.L = CB2(data, basis = basis, L, Lmax = 25, alpha = sqrt(0.05), beta = sqrt(0.05))
+            CB2.L = CB2(data, basis = basis, L, Lmax = 15, alpha = sqrt(0.05), beta = sqrt(0.05))
             length.band = c(length.band, CB2.L$width)
             conf.band.L = CB1(data, basis, L, alpha = (0.05))
             c.L[L] = max(conf.band.L$c.L)
@@ -1425,8 +1417,8 @@ if (run == TRUE){
           ## coverage
           n.test = 5000
           time = seq(min(data$time), max(data$time), length.out = n.test)
-          B.old = func.basis(data$time, L = 7, basis)
-          B = func.basis(time, L = 7, basis)
+          B.old = func.basis(data$time, L = 11, basis)
+          B = func.basis(time, L = 11, basis)
           
           f.true = t(B %*% solve(t(B.old) %*% B.old) %*% t(B.old) %*% data$f.true)
           models = list(CB3, conf.band.CV)
@@ -1453,19 +1445,19 @@ if (run == TRUE){
   save(perf.sel, file = "Res_Tab_other_2.RData")
   save(dfBandWidth, file = "Res_Tab_other_2_width.RData")
 } else {load("Res_Tab_other_2.RData") } ### charger les données
-perf.Fourier = matrix(perf.sel[,,1,1], nrow=2, ncol=2)
+perf.Fourier = matrix(perf.sel[,,,1], nrow=2, ncol=1)
 rownames(perf.Fourier) = c('L tilde', 'L.CV')
 
 perf.Fourier %>%
   kable("latex", booktabs = TRUE) %>%
-  add_header_above(c("L" = 1, "n=40, N=25" = 1, "n=150, N=25" = 1))
+  add_header_above(c("L" = 1, "n=150, N=25" = 1))
 
-pref.Splines = matrix(perf.sel[,,1,2], nrow=2, ncol=2)
+pref.Splines = matrix(perf.sel[,,1,2], nrow=2, ncol=1)
 rownames(pref.Splines) = c('L tilde', 'L.CV')
 
 pref.Splines %>%
   kable("latex", booktabs = TRUE) %>%
-  add_header_above(c("L" = 1, "n=40, N=25" = 1, "n=150, N=25" = 1))
+  add_header_above(c("L" = 1, "n=150, N=25" = 1))
 
 
 ```
@@ -1474,14 +1466,13 @@ pref.Splines %>%
 
 ```{r, out.height = "25%", fig.width=7}
 #| label: fig-width-3
-#| fig-cap: "Width of confidence bands with model selection under model misspecification. The average width of the confidence bands is evaluated over 1000 repetitions. Data are generated using a Splines basis, while bands are computed with the Fourier (top) and Legendre (bottom) basis families. Rows correspond to combinations of model selection criteria and dimensions L, and columns to different sample size pairs (n,N)."
+#| fig-cap: "Illustrative example. The confidence level of the confidence band is evaluated from 100 repetitions. Data is generated using a Splines basis, and confidence bands are calculated with the Fourier (top) and Legendre (bottom) families, for several model selection criterion in rows, L in rows and several n and N in columns."
 
 load("Res_Tab_other_2_width.RData")
 ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) + 
   geom_boxplot() + 
   facet_wrap(~basis, scales = "free_y")
 ```
-
 
 # Real data analysis {#sec-realdata}
 
@@ -1499,12 +1490,12 @@ data = list()
 data$time = (growth$age - min(growth$age))/(max(growth$age) - min(growth$age))
 data$y = growth$hgtm
 L.max = 25
-vec.L = 3:24
+vec.L = 3:15
 alpha = 0.2
 dfBandlow = dfBandup = df.max = res_growth = c()
 for (basis in c("Legendre", "Splines", "Fourier")){
   mod.sel= c()
-  if (basis == 'Fourier'){vec.L = seq(3,24, by=2)}
+  if (basis == 'Fourier'){vec.L = seq(3,15, by=2)}
   c.L = c.L.Lmax = c()
   conf.band.L.max = CB1(data, basis, L = L.max, alpha = alpha)
   c.L.Lmax = max(conf.band.L.max$c.L)
@@ -1627,7 +1618,7 @@ The last equality holds thanks to the independence of the two sub-samples.
 
 # Appendix: more experiments
 
-The properties of the coefficients are illustrated in @fig-coefficients. The true dimension is $L^*=11$. Three families are considered, Fourier, Legendre and Splines. The plots display the absolute difference between the coefficients $\mu_\ell^{L^*}$ and the projected coefficients $\underline{\mu}^{L}$, for different $\ell$ in x-axis and for different values of $L$ and $n$ in the y-axis, namely a case with $L<L^*$ and two values of $n$: $L=7, n=20$ and $L=7, n=100$; and a case with $L>L^*$ and two values of $n$: $L=15, n=20$ and $L=15, n=100$. The absolute difference is represented as a gradient of color, this gradient being adapted to each functional family. We can see that as Legendre (resp. Fourier) are orthonormal (resp. orthogonal) families, the differences are close to $0$ when $L=15$, whatever the values of $n$. When $L<L^*$, the difference is close to $0$ when $n$ is large. 
+The properties of the coefficients are illustrated in @fig-coefficients. The true dimension is $L^*=11$. Three families are considered, Fourier, Legendre and Splines. The plots display the absolute difference between the coefficients $\mu_\ell^{L^*}$ and the projected coefficients $\underline{\mu}^{L}$, for different $\ell$ in x-axis and for different values of $L$ and $n$ in the y-axis, namely a case with $L<L^*$ and two values of $n$: $L=7, n=40$ and $L=7, n=100$; and a case with $L>L^*$ and two values of $n$: $L=15, n=40$ and $L=15, n=100$. The absolute difference is represented as a gradient of color, this gradient being adapted to each functional family. We can see that as Legendre (resp. Fourier) are orthonormal (resp. orthogonal) families, the differences are close to $0$ when $L=15$, whatever the values of $n$. When $L<L^*$, the difference is close to $0$ when $n$ is large. 
 This property does not hold for the spline family, which is not orthogonal. 
 
 ```{r, fig.height=5, fig.width=7}
@@ -1638,16 +1629,16 @@ set.seed(1)
 library(RColorBrewer)
 cols = brewer.pal(9, "BuPu")
 pal <- colorRampPalette(cols)
-L.star = 10
+L.star = 7
 Time = seq(data$time[1], data$time[length(data$time)], length.out = 100)
 
-L.star = 11
+L.star = 7
 vec.L = c(7,15)
 par(mfrow=c(3,1))
 for (basis in c("Fourier", "Legendre", "Splines")){
   if (basis == "Splines"){
-    data = dgp(n=20,N=40,sd=2*1,L.star=L.star, L.eps = 20, alpha.mu = NULL, basis = basis, f.true = NULL)
-  } else { data = dgp(n=20,N=40,sd=1,L.star=L.star, L.eps = 20, alpha.mu = NULL, basis = basis, f.true = NULL)
+    data = dgp(sd=2*1,L.star=L.star, L.eps = 15, alpha.mu = NULL, basis = basis, f.true = NULL)
+  } else { data = dgp(sd=1,L.star=L.star, L.eps = 15, alpha.mu = NULL, basis = basis, f.true = NULL)
   }
   alpha.tot = c()
   for (L in vec.L){
@@ -1660,7 +1651,7 @@ for (basis in c("Fourier", "Legendre", "Splines")){
     alpha.tot = cbind(alpha.tot, alpha.true.L[1:min(c(L.star, vec.L))]-data$alpha.mu[1:min(c(L.star, vec.L))], alpha.true.L.n.large[1:min(c(L.star, vec.L))] - data$alpha.mu[1:min(c(L.star, vec.L))])
   }
   image.plot(abs(alpha.tot), main = paste0(basis, "'s basis"), col = pal(20), yaxt="n", xaxt = "n", xlab = "index of the basis" )
-  axis(2, at = seq(0, 1, length = ncol(alpha.tot)), labels = c("L=7, n=20", "L=7, n=100", "L=15, n=20", "L=15, n=100"), las = 2, cex.axis = 0.6)
+  axis(2, at = seq(0, 1, length = ncol(alpha.tot)), labels = c("L=7, n=40", "L=7, n=100", "L=15, n=40", "L=15, n=100"), las = 2, cex.axis = 0.6)
   axis(1, at = seq(0,1,length.out = 7), labels = c("1", "2", "3", "4", "5", "6", "7"))
 }
 ```
