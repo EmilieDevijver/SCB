@@ -1105,7 +1105,7 @@ The model selected by  cross validation is rather good, for all the  basis consi
 
 library(ffscb)
 
-run = TRUE
+run = FALSE
 if (run == TRUE){
   repet = 1000
   length.CBL.CV = length.CBL.L0 = length.CBL.ffscb = length.emp.mean = c(NA)
@@ -1115,7 +1115,7 @@ if (run == TRUE){
   dfBandWidth = data.frame(Band.width = double(),
                            basis = character(),
                            dimension = integer())
-  dfLhat = data.frame(Lhat = double(), L = integer(), basis = character())
+  dfLhat = data.frame( L = integer(), selected = integer(), basis = character(), dimension = character())
   ind.basis = 0
   cpt = matrix(0, nrow = 8, ncol = 3)
   for (basis in c("Fourier", "Legendre", "Splines")){
@@ -1203,17 +1203,15 @@ if (run == TRUE){
       }
     }
 
-     dfBandWidth = rbind(dfBandWidth, data.frame(Band.width = c(mod.sel[ ,4], mod.sel[ ,3], mod.sel[ ,1],  mod.sel[ ,5], length.CBL.L0, length.CBL.CV,
-                                                             length.emp.mean,length.CBL.ffscb),
-                                                  basis = rep(basis, repet*8), dimension = rep(c("Lstar","Lmax", "Lhat", "Ltilde", "L.L0", "L.CV", "Mean", "FFSCB"), each = repet*3))) 
-                                           
-    dfLhat = rbind(dfLhat, data.frame(
-      L = vec.L,
-      Lhat = matrix(table(factor(mod.sel[,2], levels = vec.L))),
-      Lhat.CV = matrix(table(factor(mod.sel.CV, levels = vec.L))),      
-      Lhat.L0 = matrix(table(factor(mod.sel.L0, levels = vec.L))),
-      L.tilde = matrix(table(factor(L.mod.sel, levels = vec.L))),
-      basis = rep(basis, length(vec.L))))
+     dfBandWidth = rbind(dfBandWidth, data.frame(Band.width = c(mod.sel[ ,1], mod.sel[ ,3], mod.sel[ ,4],   mod.sel[ ,5],  length.CBL.CV,length.CBL.L0,  length.CBL.ffscb,length.emp.mean),basis = rep(basis, repet*8), dimension = rep(c("Lhat","Lmax", "Lstar", "Ltilde", "L.CV", "L.L0", "FFSCB", "Mean"), each = repet))) 
+
+      dfLhat = rbind(dfLhat, data.frame(
+      L = rep(vec.L, 4),
+      selected = c(matrix(table(factor(mod.sel[,2], levels = vec.L))), matrix(table(factor(L.mod.sel, levels = vec.L))), matrix(table(factor(mod.sel.CV, levels = vec.L))), matrix(table(factor(mod.sel.L0, levels = vec.L)))),
+      basis = rep(basis, 4*length(vec.L)),
+      dimension = rep(c("Lhat", "Ltilde", "L.CV", "L.L0"), each = length(vec.L))))
+
+   
  }
   cpt = cpt/repet
   
@@ -1232,36 +1230,24 @@ cpt %>%
 ```
 
 
-```{r, fig.height = 5, fig.width=7}
-# | label: fig-modelsel
-# | fig-cap: "Distribution of the selected model dimension across selection methods. Based on 1000 simulated datasets, we report the distribution of the estimated dimension L for four model selection methods: from top to bottom — the debiased confidence band CB2 with Lhat, the band CB3 with Ltilde , cross-validation, and hard-thresholding. The true model dimension is Lstar = 7."
-library(patchwork)
+```{r, out.height = "45%", fig.width=10}
+#| label: fig-modelsel
+#| fig-cap: "Distribution of the selected model dimension across selection methods. Based on 1000 simulated datasets, we report the distribution of the estimated dimension L for four model selection methods: from top to bottom — the debiased confidence band CB2 with Lhat, the band CB3 with Ltilde , cross-validation, and hard-thresholding. The true model dimension is Lstar = 7."
 
 load('Res_Tab3_Lhat.RData')
 
-p1 <- ggplot(data = dfLhat, aes(x = L, y = Lhat)) +
-  geom_bar(stat ="identity")+
-  facet_grid(~basis)
+dfLhat$dimension = factor(dfLhat$dimension, levels = c('Lhat', 'Ltilde', 'L.CV', 'L.L0'))
 
-p2 <- ggplot(data = dfLhat, aes(x = L, y = L.tilde)) +
-  geom_bar(stat ="identity")+
-  facet_grid(~basis)
-
-p3 <- ggplot(data = dfLhat, aes(x = L, y = Lhat.CV)) +
-  geom_bar(stat ="identity")+
-  facet_grid(~basis)
-p4 <- ggplot(data = dfLhat, aes(x = L, y = Lhat.L0)) +
-  geom_bar(stat ="identity")+
-  facet_grid(~basis)
-
-(p1 | p2) / (p3 | p4)
+ggplot(data = dfLhat, aes(x = L, y = selected))+
+  geom_bar(stat="identity")+
+  facet_grid(dimension~basis)
 
 
 ```
 
 The reformulation of the band around $\underline{\hat f}_2^{ L_{\max}, L^*}$ is close to the band presented in @sec-bandSun for $L=L_{\max}$, that is a band centered around $\underline{\hat f}^{ L_{\max}, L^*}$. A natural question is to understand what is the gain by doing so instead of using the band from @sec-bandSun with $L=L_{\max}$, namely the band $\left [\underline{\hat f}^{ L_{\max}, L^*}(t)-\hat d^{L_{\max}}(t); \underline{\hat f}^{ L_{\max}, L^*}(t)+\hat d^{L_{\max}}(t)\right]$. To do that, we have to understand the behavior of the different terms. As it is difficult to compare theoretically the width of the two bands, we compare them using simulations. 
 For 1000 repeated datasets, we compute several  confidence bands:  the  $CB_1$ band constructed in @sec-bandSun with $L_{\max}$, the  $CB_{2}$ band defined in @prp-CBf with $\hat L$,  the  $CB_{3}$ band defined in @sec-modsel with $\tilde L$ and the ideal (and not accessible) band constructed in @sec-bandSun with the true $L^*$. In @fig-width-2, we present  boxplots of the norms of the band width with $\hat L$,  $L_{\max}$, $L^*$  and $\tilde{L}$. 
-The width of the confidence band with the true $L^*$ is smaller, which is expected but unfortunately not achievable.  The width of the confidence band $CB_1$  is smaller than that of the band $CB_2$. This can be explained by the fact that we estimate two different quantities, on smaller datasets, for more conservative levels ($1-\alpha$ and $1-\beta$ respectively) in order to finally achieve the confidence level of $1-\alpha\beta$. This also explains why the cross validation and hard-thresholding methods, which also divide the sample into two parts, do not give good results either.  The model given by the heuristic model selection criterion $\tilde crit$ achieves good performance. 
+The width of the confidence band with the true $L^*$ is smaller, which is expected but unfortunately not achievable.  The width of the confidence band $CB_1$  is smaller than that of the band $CB_2$. This can be explained by the fact that we estimate two different quantities, on smaller datasets, for more conservative levels ($1-\alpha$ and $1-\beta$ respectively) in order to finally achieve the confidence level of $1-\alpha\beta$. This also explains why the cross validation and hard-thresholding methods, which also divide the sample into two parts, do not give good results either.  The model given by the heuristic model selection criterion $\widetilde{crit}$ achieves good performance. 
 Note that the width of the selected model $\tilde L$ is better than the width of the confidence band with a large level $L_{\max}$, which one should have used to avoid model selection. 
 
 ```{r, out.height = "25%", fig.width=10}
@@ -1270,7 +1256,7 @@ Note that the width of the selected model $\tilde L$ is better than the width of
 
 load('Res_Tab3_BandWidth.RData')
 
-dfBandWidth$dimension <- factor(dfBandWidth$dimension, levels = unique(dfBandWidth$dimension))
+dfBandWidth$dimension <- factor(dfBandWidth$dimension, levels = c('Lstar','Lmax','Lhat','Ltilde','L.CV','L.L0', 'FFSCB', 'Mean'))
 
 ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) + 
   geom_boxplot() + 
