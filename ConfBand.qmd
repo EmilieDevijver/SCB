@@ -1103,10 +1103,10 @@ The model selected by  cross validation is rather good, for all the  basis consi
 #| label: tbl-levLstar2
 #| tbl-cap: "Comparison with the state-of-the-art for the empirical confidence level. The table reports the performance of the proposed confidence band CB3, estimated over 1000 repetitions, for various model selection criteria and competitive methods (rows) and for various basis families (columns). Results are shown for alpha=0.05, with n=50 and N=25."
 
-library(ffscb)
 
 run = FALSE
 if (run == TRUE){
+  library(ffscb)
   repet = 1000
   length.CBL.CV = length.CBL.L0 = length.CBL.ffscb = length.emp.mean = c(NA)
   dfLengthSelect.CV = data.frame(length = double(), basis = character())
