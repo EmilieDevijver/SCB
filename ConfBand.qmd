@@ -162,11 +162,13 @@ Moreover under Assumption 2,
 $$\mu_{\ell}^{L} = \mu_\ell^{L^*} \quad{ for }\; \ell =1, \ldots, \min(L, L^{*}).$$
 
 It is interesting to note that this is not true when the basis is not orthonormal.
+
 In practice, data are observed at discrete time, we consider the operator $\mathbf{P}^L$ defined as the matrix $\mathbf{P}^L = ((\mathbf{B}^L)^T \mathbf{B}^L)^{-1} (\mathbf{B}^L)^T$ of size $L\times n$.  This coincides with the orthogonal projection when we deal with an orthonormal basis, but this formula also holds for non orthonormal family, coming back to the least square estimator on a specified family. 
 Then we define the coefficients $\underline{\mu}^{L}$ which are the coefficients of ${\mu}^{L}$ approximated on the vector space, denoted $\mathbf{S}^L$, defined by the matrix $\mathbf{B}^L$. 
 $$\underline{\mu}^{L} := \mathbf{P}^L \mathbf{B}^{L^*}\mu^{L^*}.$$
 
 Note that 
+
 - When $L\geq L^*$, when $n>L$, we have for $\ell=1, \ldots, L^*$, 
 $$ \underline{\mu}^{L}_\ell = \mu^{L^*}_\ell.$$
  
@@ -374,7 +376,7 @@ $$
 \mathbb{P}\left(\forall t\in[0,1], -\hat d_1^L(t) \leq \underline{f}^{L}(t) - \underline{\hat{f}}_1^{L}(t) \leq \hat d_1^L(t)\right) = 1-\alpha.
 $$ {#eq-def-dL1}
 
-Next, we need to control the bias $Bias_{L}(t) = \underline{f}^{L}(t)-f^{L^*}(t)$. Recall that when $L_{\max}$ is sufficiently large and $n> L_{\max}$, we have $f^{L^*} = \underline{f}^{L_{\max},L^*}$. We therefore need to control the $Bias_{L}(t) = \underline{f}^{L}(t) - \underline{f}^{L_{\max},L^*}(t)$. It would be tempting to replace $Bias_{L}(t)$ by its estimation based on the second sample $\mathbf{y}^2$. But this would introduce an estimation error that we also need to control, in the same spirit as what is done in @Pascal2017. We can again use @sec-bandSun to compute the function $\hat d_2^{L,L_{\max}}(t)$ on the sample $\mathbf{y}^2$, and the functional estimators $\underline{\hat{f}}_2^{L}(t)$ and $\underline{\hat f}_2^{L_{\max}, L^*}(t)$ of $\underline{f}^{L}(t)$ and $\underline{ f}^{L_{\max}, L^*}(t)$, respectively. This allows us to construct the following band for $\underline{f}^{L}(t) - \underline{f}^{L_{\max},L^*}$ for a confidence level $1-\beta$,
+Next, we need to control the bias $Bias_{L}(t) = \underline{f}^{L}(t)-f^{L^*}(t)$. Recall that when $L_{\max}$ is sufficiently large and $n> L_{\max}$, we have $f^{L^*} = \underline{f}^{L_{\max},L^*}$. We therefore need to control the $Bias_{L}(t) = \underline{f}^{L}(t) - \underline{f}^{L_{\max},L^*}(t)$. It would be tempting to replace $Bias_{L}(t)$ by its estimation based on the second sample $\mathbf{y}^2$, but this would introduce an estimation error that we also need to control, in the same spirit as what is done in @Pascal2017. We can again use @sec-bandSun to compute the function $\hat d_2^{L,L_{\max}}(t)$ on the sample $\mathbf{y}^2$, and the functional estimators $\underline{\hat{f}}_2^{L}(t)$ and $\underline{\hat f}_2^{L_{\max}, L^*}(t)$ of $\underline{f}^{L}(t)$ and $\underline{ f}^{L_{\max}, L^*}(t)$, respectively. This allows us to construct the following band for $\underline{f}^{L}(t) - \underline{f}^{L_{\max},L^*}$ for a confidence level $1-\beta$,
 
 $$
 \mathbb{P}\left(\forall t\in[0,1], - \hat d_2^{L,L_{\max}}(t) \leq \underline{ f}^{L_{\max}, L^*}(t)- \underline{ f}^{L}(t) - (\underline{\hat f}_2^{L_{\max}, L^*}(t)-\underline{\hat f}_2^{L}(t)) \leq \hat d_2^{L,L_{\max}}(t)\right) = 1-\beta.
@@ -447,7 +449,7 @@ In this section, we propose a new method in the non asymptotic setting to provid
 
 Our method  uses the collection of confidence bands defined in @sec-bandSun. Instead of correcting their bias,  the strategy is to propose a selection criterion that is a trade-off between this bias and the dimension of the basis. To do this, we propose a new heuristic criterion linked to the definition of the band itself, considering the estimation of the band as the estimation of a quantile of a certain empirical process. The criterion is inspired by model selection tools for choosing the best dimension $L$. In the following, we assume that $L_{\max}$ is large enough such that $\underline f^{L_{\max},L^*}=f^{L^*}$.
 
-We work on the quantile $q^L$ introduced in @eq-qL, its oracle version $q^{L^*}$ for level $L^*$ and its estimate $\hat q^L$. All are scalars, belonging to a collection indexed by $L=L_{\min}, \ldots, L_{\max}$. A natural criterion for choosing the best $L$ is that the estimator $\hat q^L$ minimizes the quadratic error $\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right)$. However, this quadratic error is unknown as $q^{L^*}$ is unknown. We cannot use it directly.
+We work on the quantile $q^L$ introduced in @eq-qL, its oracle version $q^{L^*}$ for level $L^*$ and its estimate $\hat q^L$. All are scalars, belonging to a collection indexed by $L \in \{L_{\min}, \ldots, L_{\max}\}$. A natural criterion for choosing the best $L$ is that the estimator $\hat q^L$ minimizes the quadratic error $\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right)$. However, this quadratic error is unknown as $q^{L^*}$ is unknown. We cannot use it directly.
 
 Instead, we study $\|\hat{q}^{L_{\max}}-\hat q^L\|^2$. While the theoretical quadratic error $\mathbb{E}\left( \|q^{L^*}-\hat q^L\|^2\right)$ decreases when $L<L^*$ and increases when $L>L^*$, the $\|\hat{q}^{L_{\max}}-\hat q^L\|^2$ approximation to this error always decreases when $L>L^*$, as illustrated in @sec-simulation.
 
@@ -462,12 +464,12 @@ $$CB_3(\underline{f} ^{L^*}) = CB_1(\underline{f}^{\tilde L, L^*})$$
 This criterion is illustrated in @sec-simumodsel.  We also compare with two other standard approaches, heuristic as well, namely the cross-validation approach used to select the dimension $L$ which minimizes the reconstruction error, and a thresholding method  which keeps the higher dimension $L$ with large enough coefficients. These two methods are less oriented to the objective of controling the level of the selected confidence band.
 
 # Simulation study {#sec-simulation}
-In this section, we illustrate the different statements provided along the paper on generated data. First, in   @sec-dgp,  we describe the generating data process and illustrate the linear estimator considered in this paper. In @sec-simu-band,  we illustrate the first confidence band, for a fixed level, as introduced in @sec-bandSun.  Then, we illustrate the debiased confidence band in @sec-simudebias, and  discuss the model selection criterion in @sec-simumodsel. We finally study the generalization of the method out of the class of models in @sec-gen. 
+In this section, we illustrate the different statements provided along the paper on generated data. First, in   @sec-dgp,  we describe the generating data process and illustrate the linear estimator considered in this paper. In @sec-simu-band,  we illustrate the first confidence band, for a fixed level, as introduced in @sec-bandSun.  Then, we illustrate the debiased confidence band in @sec-simudebias, and  discuss the model selection criterion in @sec-simumethod2, comparing both of them with state-of-the-art methods in @sec-simumodsel. We finally study the generalization of the method out of the class of models in @sec-gen. 
 
 ## Generating data process {#sec-dgp}
 
 
-To illustrate the model, we simulate a regression functional model with $n=40$ regular timepoints per individual and $N=25$ individuals. In @fig-BasisModel, the function $f$ (red curve) belongs to the Fourier (resp. Legendre and Spline) family with $L^*=7$ and the noisy indiivdual observations $y_{ij}$ (grey curves) have a functional noise in dimension $L^{\varepsilon}=15$, also in the Fourier (resp. Legendre and Spline) family on the left plot (resp. middle and right). 
+To illustrate the model, we simulate a regression functional model with $n=40$ regular timepoints per individual and $N=25$ individuals. In @fig-BasisModel, the function $f$ (black curve) belongs to the Fourier (resp. Legendre and Spline) family with $L^*=7$ and the noisy individual observations $(y_{ij})_{1\leq i \leq N, 1\leq j \leq n}$ (grey curves) have a functional noise in dimension $L^{\varepsilon}=15$, also in the Fourier (resp. Legendre and Spline) family on the left plot (resp. middle and right). 
 
 
 ```{r message=FALSE, fig.height=3, fig.width=7}
@@ -572,11 +574,11 @@ ggplot(data = df, aes(x = Time, y = f, color = type, group = ind)) +
 
 
 ## Confidence band for a fixed level {#sec-simu-band}
-The general band for $f^L$ derived in @thm-sunLoader is illustrated on @fig-bandL. It displays on the top row several functional data generated under either the Fourier family (left), Legendre (middle) or Spline (right), on the middle row the confidence bands of $\underline f^{L}$ for different values of $L=3,5, 7, 11$ and $15$, and on the bottom row the bound $\hat d^L$. The true functions $\underline f^{L}$ are displayed in cyan and the confidence bands in purple. We also compare them to the band based on the empirical mean (purple). The bands are very precise for each $L$. The behavior of $\hat d^L$ increases with $L$. As $d^L$ can be seen as a variance, $\hat d^L(t)$ is larger on the boundary of the time domain, as there are less observations near 0 and 1. The band based on the empirical mean is wider for each model. Even if the empirical mean is a good estimator, its pointwise construction increases the dimension of the estimator, thus its variance and its confidence band. This is not the case when we use the projection functional estimator which estimated a reduced number of parameters. 
+The general band for $f^L$ derived in @thm-sunLoader is illustrated on @fig-bandL. It displays on the top row several functional data generated under either the Fourier family (left), Legendre (middle) or Spline (right), on the middle row the confidence bands of $\underline f^{L}$ for different values of $L \in \{3,5, 7, 11\}$ and $15$, and on the bottom row the bound $\hat d^L$. On the middle row, the true functions $\underline f^{L}$ are displayed in black and the confidence bands in color. The bands are very precise for each $L$. The behavior of $\hat d^L$ increases with $L$. As $d^L$ can be seen as a variance, $\hat d^L(t)$ is larger on the boundary of the time domain, as there are less observations near 0 and 1.  
 
 We also evaluate numerically the levels of the obtained confidence bands. For this, 1000 datasets are simulated, the confidence band is estimated for each of them. 
-The empirical confidence level is then evaluated as the proportion of confidence bands that contain the true function. @tbl-levelL presents the empirical confidence levels for different values of $L$ and several sample sizes $n \in \{40, 150\}$, and $N \in \{10, 25, 60\}$, and for the 3 basis. 
-When $N=25$ and $N=60$, the level is the expected one whatever the value of $L$. We will see in the next sections that this will not be the case for the debiased confidence band. When $N=10$, the level is too small, especially when $L$ is large. This might be due to the the large number of parameters to be estimated in the covariance matrix $C$, with a small number of observations $N$. 
+The empirical confidence level is then evaluated as the proportion of confidence bands that contain the true function  over 5000 test timepoints. @tbl-levelL presents the empirical confidence levels for different values of $L$ and several sample sizes $n \in \{40, 150\}$, and $N \in \{10, 25, 60\}$, and for the 3 basis. 
+When $N=25$ and $N=60$, the level is the expected one whatever the value of $L$. We will see in the next sections that this will not be the case for the debiased confidence band. When $N=10$, the level is too small, especially when $L$ is large. This might be due to the the large number of parameters to be estimated in the covariance matrix, with a small number of observations $N$. 
 
 
 ```{r }
@@ -831,12 +833,12 @@ perf.S %>%
 
 ## Method 1: confidence bands by correcting the bias {#sec-simudebias}
 We illustrate the confidence band of $f^{L^*}$  given in @prp-CBf. 
-In @fig-Lstar, top row, we plot the confidence bands obtained for different dimensions $L \in \{3,5,11,15,21\}$ with Fourier, Legendre and Splines families and $\alpha=\beta=\sqrt{0.05}\approx 0.22$. We can see that all the confidence bands are alike. Especially, they are unbiased, even for $L=3$. A larger dimension $L$ provides a smoother band. 
+In @fig-Lstar, top row, we plot the confidence bands obtained for different dimensions $L \in \{3,5,7, 11,15\}$ with Fourier, Legendre and Splines families and $\alpha=\beta=\sqrt{0.05}\approx 0.22$. We can see that all the confidence bands are alike. Especially, they are unbiased, even for $L=3$. A larger dimension $L$ provides a smoother band. 
 On the middle and bottom rows of @fig-Lstar, we illustrate the two terms that enter the confidence band, $t \mapsto \hat d_1^L(t)$ and $t\mapsto \hat d_2^{L,L_{\max}}(t)$. Their behavior is the same along time. The function $\hat d_1^L(t)$ can be seen as a variance, this is why it is larger near 0 and 1 where there are less observations. The function $\hat d_2^{L,L_{\max}}(t)$ is smaller than $\hat d_1^L(t)$ because it controls the remaining rest after the projection. Note that as expected when $L>L^\varepsilon$, $\hat d_2^{L,L_{\max}}(t)$ is close to 0. As explained before, the influence of $L$ is not the same for the two functions. When $L$ increases, $\hat d_1^L(t)$ increases while $\hat d_2^{L,L_{\max}}(t)$ decreases. 
 
 ```{r, fig.height = 7, fig.width=7}
 #| label: fig-Lstar
-#| fig-cap: "Visualization of confidence bands by correcting the bias. For a given dataset, we plot several confidence bands (top row), functions dL (middle row) and dLLmax (bottom row). Bands and functions are estimated with Fourier (left column), Legendre (middle column) and Spline (right column) basis and several dimensions L (3, 5, 7, 11, 15, 21), and Lmax = 25."
+#| fig-cap: "Visualization of confidence bands by correcting the bias. For a given dataset, we plot several confidence bands (top row), functions dL (middle row) and dLLmax (bottom row). Bands and functions are estimated with Fourier (left column), Legendre (middle column) and Spline (right column) basis and several dimensions L (3, 5, 7, 11, 15), and Lmax = 25."
 
 CB2 = function(data, basis, L, Lmax = 30, alpha = 0.05, beta = 0.05){
   ### data: the observations, only the time-points and the individual functions
@@ -900,7 +902,7 @@ dfdLLmax = data.frame(Time = double(),
                       basis = character(),
                       dimension = character()
 )
-vec.L = c(3,5,7,11,15,21)
+vec.L = c(3,5,7,11,15)
 for (basis in c("Legendre", "Fourier", "Splines")){
   if (basis == "Splines"){ data = dgp(sd=2*1, alpha.mu = NULL, basis = basis, f.true = NULL)
   } else { data = dgp(sd=1, alpha.mu = NULL, basis = basis, f.true = NULL)}
@@ -952,7 +954,7 @@ ggarrange(p1, p2, p3, nrow = 3, common.legend = TRUE, legend = "bottom")
 
 ```
 
-In @tbl-levLstar, we simulate 1000 repeated datasets with the Legendre family and with two sample sizes $n=40$ and $n=150$ and $N=25$. For each dataset, we compute the confidence band defined in @prp-CBf with a theoretical confidence level of $1-\alpha\beta=0.95$ and for different values of $L$. Then the confidence level is approximated as the proportion of confidence bands containing the true function $f$. Remark that when $L<L^{\varepsilon}$, the level is the expected one, that is 0.95. When $L>L^{\varepsilon}$, the level is no more ensured, as explained before. Indeed the term $d^{L,L^{\max}}$ is mainly equal to 0 when $L^{\max}$ is large enough, and the level is close to $1-\alpha$ instead of $1-\alpha\beta$. This is not the case for the band in @sec-bandSun, as this is due to the correction of the bias. 
+In @tbl-levLstar, we simulate 1000 repeated datasets with the Legendre family and with two sample sizes $n=40$ and $n=150$ and $N=25$. For each dataset, we compute the confidence band defined in @prp-CBf with a theoretical confidence level of $1-\alpha\beta=0.95$ and for different values of $L$. Then the confidence level is approximated as the proportion of confidence bands containing the true function $f$ over 5000 test timepoints. Remark that when $L<L^{\varepsilon}$, the level is the expected one, that is 0.95. When $L>L^{\varepsilon}$, the level is no more ensured, as explained before. Indeed the term $d^{L,L^{\max}}$ is mainly equal to 0 when $L^{\max}$ is large enough, and the level is close to $1-\alpha$ instead of $1-\alpha\beta$. This is not the case for the band in @sec-bandSun, as this is due to the correction of the bias. 
 ```{r}
 #| label: tbl-levLstar
 #| tbl-cap: "Empirical coverage of CB2. The table reports the empirical level of confidence of the proposed confidence band CB2, computed for various values of L (rows) and  n  (columns), with fixed N=25, and various basis (top: Fourier, middle: Legendre, bttom: Splines). The nominal confidence level is set to 0.05, using parameters  alpha=beta=0.2, such that the combined coverage is 1-0.95."
@@ -1101,7 +1103,7 @@ The model selected by  cross validation is rather good, for all the  basis consi
 
 ```{r, fig.height = 7, fig.width=7}
 #| label: tbl-levLstar2
-#| tbl-cap: "Comparison with the state-of-the-art for the empirical confidence level. The table reports the performance of the proposed confidence band CB3, estimated over 1000 repetitions, for various model selection criteria and competitive methods (rows) and for various basis families (columns). Results are shown for alpha=0.05, with n=50 and N=25."
+#| tbl-cap: "Comparison with the state-of-the-art for the empirical confidence level. The table reports the performance of the proposed confidence band CB3, estimated over 1000 repetitions, for various model selection criteria and competitive methods (rows) and for various basis families (columns). Results are shown for alpha=0.05, with n=40 and N=25."
 
 
 run = FALSE
@@ -1246,9 +1248,9 @@ ggplot(data = dfLhat, aes(x = L, y = selected))+
 ```
 
 The reformulation of the band around $\underline{\hat f}_2^{ L_{\max}, L^*}$ is close to the band presented in @sec-bandSun for $L=L_{\max}$, that is a band centered around $\underline{\hat f}^{ L_{\max}, L^*}$. A natural question is to understand what is the gain by doing so instead of using the band from @sec-bandSun with $L=L_{\max}$, namely the band $\left [\underline{\hat f}^{ L_{\max}, L^*}(t)-\hat d^{L_{\max}}(t); \underline{\hat f}^{ L_{\max}, L^*}(t)+\hat d^{L_{\max}}(t)\right]$. To do that, we have to understand the behavior of the different terms. As it is difficult to compare theoretically the width of the two bands, we compare them using simulations. 
-For 1000 repeated datasets, we compute several  confidence bands:  the  $CB_1$ band constructed in @sec-bandSun with $L_{\max}$, the  $CB_{2}$ band defined in @prp-CBf with $\hat L$,  the  $CB_{3}$ band defined in @sec-modsel with $\tilde L$ and the ideal (and not accessible) band constructed in @sec-bandSun with the true $L^*$. In @fig-width-2, we present  boxplots of the norms of the band width with $\hat L$,  $L_{\max}$, $L^*$  and $\tilde{L}$. 
+For 1000 repeated datasets, we compute several  confidence bands:  the  $CB_1$ band constructed in @sec-bandSun with $L_{\max}$, the  $CB_{2}$ band defined in @prp-CBf with $\hat L$,  the  $CB_{3}$ band defined in @sec-modsel with $\tilde L$ and the ideal (and not accessible) band constructed in @sec-bandSun with the true $L^*$. In @fig-width-2, we present  boxplots of the norms of the band width with $\hat L$,  $L_{\max}$, $L^*$  and $\tilde{L}$. We also use the empirical mean and the method FFSCB @Liebl2019. 
 The width of the confidence band with the true $L^*$ is smaller, which is expected but unfortunately not achievable.  The width of the confidence band $CB_1$  is smaller than that of the band $CB_2$. This can be explained by the fact that we estimate two different quantities, on smaller datasets, for more conservative levels ($1-\alpha$ and $1-\beta$ respectively) in order to finally achieve the confidence level of $1-\alpha\beta$. This also explains why the cross validation and hard-thresholding methods, which also divide the sample into two parts, do not give good results either.  The model given by the heuristic model selection criterion $\widetilde{crit}$ achieves good performance. 
-Note that the width of the selected model $\tilde L$ is better than the width of the confidence band with a large level $L_{\max}$, which one should have used to avoid model selection. 
+Note that the width of the selected model $\tilde L$ is better than the width of the confidence band with a large level $L_{\max}$, which one should have used to avoid model selection. The empirical mean and the band given by FFSCB are a bit larger.
 
 ```{r, out.height = "25%", fig.width=10}
 #| label: fig-width-2
@@ -1267,7 +1269,7 @@ ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) +
 
 ## Generalization out of the model {#sec-gen}
 
-We now illustrate the behaviour of the bands when the basis used for estimation is poorly specified. We simulate 1000 data sets with a spline basis and estimate the confidence bands with the Fourier and Legendre basis, for different values of $n$ and $N$. The coverage rates are presented in @tbl-levelL-2. The Fourier basis does not give a correct rate. On the other hand, the Legendre basis gives very satisfactory coverage rates for $L>20$.  
+We now illustrate the behaviour of the bands when the basis used for estimation is poorly specified. We simulate 1000 data sets with a spline basis and estimate the confidence bands with the Fourier and Legendre basis, for different values of $n$ and $N$. The coverage rates are presented in @tbl-levelL-2. The Fourier basis does not give a correct rate. On the other hand, the Legendre basis gives very satisfactory coverage rates for $L>11$.  
 
 
 
@@ -1339,7 +1341,7 @@ pref.Legendre %>%
 ```
 
 
-Next, we illustrate the $\tilde L$ dimension selection method and compare it to the cross-validation method.  @tbl-levelL-3 presents the coverage rates of the corresponding confidence bands estimated with the Fourier and Legendre basis, in the case $N=25$ and $n=150$. Once again, we see that the Fourier basis does not give good results, either by cross-validation or by $\tilde L$. On the other hand, with the Legendre basis, the $\tilde L$ method gives a satisfactory coverage rate, even if it is underestimated, whereas the cross-validation method is very poor. 
+Next, we illustrate the $\tilde L$ dimension selection method and compare it to the cross-validation method.  @tbl-levelL-3 presents the coverage rates of the corresponding confidence bands estimated with the Fourier and Legendre basis, in the case $N=25$ and $n\in \{40,150\}$. Once again, we see that the Fourier basis does not give good results, either by cross-validation or by $\tilde L$. On the other hand, with the Legendre basis, the $\tilde L$ method gives a satisfactory coverage rate, even if it is underestimated, whereas the cross-validation method is very poor. 
 Moreover, the widths of the confidence bands selected with $\tilde L$ and by cross validation are represented by boxplot in @fig-width-3. It can be seen that the cross-validation approach provides wider bands, even though their confidence level is not guaranteed. The method proposed in this paper provides a narrower band with a correct level of confidence. We thus recommend to use the Legendre family with the criteria $\tilde L$. 
 
 
