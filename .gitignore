@@ -13,4 +13,4 @@ logo_text_white.pdf
 template-computo-R.pdf
 /.quarto/
 _extensions/
-renv/
+renv/.DS_Store
