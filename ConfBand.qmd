@@ -1256,7 +1256,7 @@ Note that the width of the selected model $\tilde L$ is better than the width of
 #| label: fig-width-2
 #| fig-cap: "Width of the confidence bands accross  selection methods. Boxplots show the distribution of the confidence band width over 1000 repetitions, for the dimension selected by the various criteria introduced in this paper (as well as standard baselines). Results are shown for the Fourier (left), Legendre (middle), and Splines (right) basis families."
 
-load('Res_Tab3_BandWidth.RData')
+load('res_data/Res_Tab3_BandWidth.RData')
 
 dfBandWidth$dimension <- factor(dfBandWidth$dimension, levels = c('Lstar','Lmax','Lhat','Ltilde','L.CV','L.L0', 'FFSCB', 'Mean'))
 
