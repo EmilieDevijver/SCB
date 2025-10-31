@@ -803,8 +803,8 @@ if (run == TRUE){
       }
     }
   }
-  save(perf, file = "Res_Tab1.RData")
-} else {load("Res_Tab1.RData") } ### charger les données
+  save(perf, file = "res_data/Res_Tab1.RData")
+} else {load("res_data/Res_Tab1.RData") } ### charger les données
 
 perf.F = cbind(perf[vec.L,,1,1],perf[vec.L,,2,1],perf[vec.L,,3,1])
 perf.L = cbind(perf[vec.L,,1,2],perf[vec.L,,2,2],perf[vec.L,,3,2])
@@ -990,16 +990,16 @@ if (run == TRUE){
     perf = perf[vec.L,]
     rownames(perf) = vec.L
     colnames(perf) = vec.n
-    save(perf, file = paste0("Res_Tab2_", basis, ".RData"))
+    save(perf, file = paste0("res_data/Res_Tab2_", basis, ".RData"))
     kbl_obj = perf %>% kable("latex", booktabs = TRUE) %>% add_header_above(c("L" = 1, "n" = 2))
     table_list[[basis]] <- kbl_obj
     }
 } 
-load(paste0("Res_Tab2_Fourier.RData"))
+load(paste0("res_data/Res_Tab2_Fourier.RData"))
 perf.F = perf 
-load(paste0("Res_Tab2_Legendre.RData"))
+load(paste0("res_data/Res_Tab2_Legendre.RData"))
 perf.L = perf 
-load(paste0("Res_Tab2_Splines.RData"))
+load(paste0("res_data/Res_Tab2_Splines.RData"))
 perf.S = perf 
   
 
@@ -1217,11 +1217,11 @@ if (run == TRUE){
  }
   cpt = cpt/repet
   
-  save(cpt, file = "Res_Tab4.RData")
-  save(dfBandWidth, file = "Res_Tab3_BandWidth.RData")
-  save(dfLhat, file = "Res_Tab3_Lhat.RData")
+  save(cpt, file = "res_data/Res_Tab4.RData")
+  save(dfBandWidth, file = "res_data/Res_Tab3_BandWidth.RData")
+  save(dfLhat, file = "res_data/Res_Tab3_Lhat.RData")
 } else {
-  load('Res_Tab4.RData')}
+  load('res_data/Res_Tab4.RData')}
 
 row.names(cpt) = c("Lstar", "Lmax", "Lhat","Ltilde", "L.L0", "L.CV", "Mean", "FFSCB")
 
@@ -1236,7 +1236,7 @@ cpt %>%
 #| label: fig-modelsel
 #| fig-cap: "Distribution of the selected model dimension across selection methods. Based on 1000 simulated datasets, we report the distribution of the estimated dimension L for four model selection methods: from top to bottom — the debiased confidence band CB2 with Lhat, the band CB3 with Ltilde , cross-validation, and hard-thresholding. The true model dimension is Lstar = 7."
 
-load('Res_Tab3_Lhat.RData')
+load('res_data/Res_Tab3_Lhat.RData')
 
 dfLhat$dimension = factor(dfLhat$dimension, levels = c('Lhat', 'Ltilde', 'L.CV', 'L.L0'))
 
@@ -1321,8 +1321,8 @@ if (run == TRUE){
     }
     
   }
-  save(perf, file = "Res_Tab_other.RData")
-} else {load("Res_Tab_other.RData") } ### charger les données
+  save(perf, file = "res_data/Res_Tab_other.RData")
+} else {load("res_data/Res_Tab_other.RData") } ### charger les données
 perf.Fourier = cbind(perf[vec.L,,1,1],perf[vec.L,,2,1])
 rownames(perf.Fourier) = vec.L
 colnames(perf.Fourier) = c(" 50/10", "150/10", "50/40", "150/40")
@@ -1438,9 +1438,9 @@ if (run == TRUE){
   }
   perf.sel = perf.sel / nb.repeat  
   
-  save(perf.sel, file = "Res_Tab_other_2.RData")
-  save(dfBandWidth, file = "Res_Tab_other_2_width.RData")
-} else {load("Res_Tab_other_2.RData") } ### charger les données
+  save(perf.sel, file = "res_data/Res_Tab_other_2.RData")
+  save(dfBandWidth, file = "res_data/Res_Tab_other_2_width.RData")
+} else {load("res_data/Res_Tab_other_2.RData") } ### charger les données
 perf.Fourier = matrix(perf.sel[,,1,1], nrow=2, ncol=2)
 rownames(perf.Fourier) = c('L tilde', 'L.CV')
 
@@ -1464,7 +1464,7 @@ pref.Splines %>%
 #| label: fig-width-3
 #| fig-cap: "Width of confidence bands with model selection under model misspecification. The average width of the confidence bands is evaluated over 1000 repetitions. Data are generated using a Splines basis, while bands are computed with the Fourier (top) and Legendre (bottom) basis families. Rows correspond to combinations of model selection criteria and dimensions L, and columns to different sample size pairs (n,N)."
 
-load("Res_Tab_other_2_width.RData")
+load("res_data/Res_Tab_other_2_width.RData")
 ggplot(dfBandWidth, aes(x = dimension, y = Band.width)) + 
   geom_boxplot() + 
   facet_wrap(~basis, scales = "free_y")
