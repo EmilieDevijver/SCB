@@ -1,9 +1,7 @@
 # Should we correct the bias in Confidence Bands for Repeated Functional Data?
 
 
-Author:
-
--  Emilie Devijver and Adeline Samson - [Université Grenoble Alpes] [Laboratoire d'Informatique de Grenoble] [Laboratoire Jean Kuntzman]
+Authors: Emilie Devijver and Adeline Samson - Laboratoire d'Informatique de Grenoble and Laboratoire Jean Kuntzman, Université Grenoble Alpes, France
 
 Abstract
 
