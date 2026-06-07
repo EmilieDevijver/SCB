@@ -1105,7 +1105,6 @@ The model selected by  cross validation is rather good, for all the  basis consi
 ```{r, fig.height = 7, fig.width=7}
 #| label: tbl-levLstar2
 #| tbl-cap: "Illustrative example. We display the level of confidence over 100 repetitions for the proposed confidence band CB3, for several model selection criterion in rows and several basis in columns, for alpha=0.05 and n=50, N=40."
-install.packages("ffscb")
 library(ffscb)
 
 run = FALSE
